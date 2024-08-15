@@ -16,26 +16,31 @@ export default function ProjectsLayout({children}) {
     const project_links = [
         {
             name: 'Project',
+            link:'/projects',
             icon:RiBuilding2Line
 
         },
         {
             name: 'Official Search',
+            link:'/projects/official_search',
             icon:TbDeviceImacSearch
 
         },
         {
             name: 'Site Clearance',
+            link:'/projects/site_clearance',
             icon:MdDomainVerification
 
         },
         {
             name: 'Project Disputes',
+            link:'/projects/disputes',
             icon:TbFlagCancel
 
         },
         {
             name: 'Project Survey',
+            link:'/projects/survey',
             icon:IoTelescopeOutline
 
         },
@@ -56,10 +61,10 @@ export default function ProjectsLayout({children}) {
                 <div className={' border-b-[0.9px] flex justify-around  border-gray-300 overflow-x-scroll'}>
                     {
                         project_links.map((item,index)=>(
-                            <div className={'flex items-center gap-2 p-2 cursor-pointer'}>
+                            <Link href={item.link} className={` ${pathname === item.link && 'border-b-[2px] text-[#17225a] border-[#17225a]'} flex items-center gap-2 p-2 cursor-pointer`}>
                                 <item.icon />
                                 <span className={'hidden md:block'}>{item.name}</span>
-                            </div>
+                            </Link>
                         ))
                     }
                 </div>

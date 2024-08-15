@@ -15,43 +15,26 @@ import {
     ListItemPrefix
 } from "@material-tailwind/react";
 import {IoCalendarOutline, IoSettingsOutline, IoMenuOutline, IoListOutline} from "react-icons/io5";
-import { BiMessageSquareDetail } from "react-icons/bi";
-import { CiBellOn } from "react-icons/ci";
+import {BiMessageSquareDetail} from "react-icons/bi";
+import {CiBellOn} from "react-icons/ci";
 import {RiLogoutCircleRLine} from "react-icons/ri";
 import {tasks} from '../../constants/tasks'
 import moment from 'moment'
 
-
-export default function SmallScreenNavbar() {
+export default function Main({children}) {
     const [openNavbar, setOpenNavbar] = useState(false)
     const pathname = usePathname()
     const router = useRouter()
     const [isCalendar, setIsCalendar] = useState(false);
     const [openRightBar, setOpenRightBar] = useState(false)
 
-    function formatDate(dateTimeString) {
-        const date = moment(dateTimeString);
-
-        if (date.isSame(moment(), 'day')) {
-            return 'Today';
-        } else if (date.isSame(moment().add(1, 'days'), 'day')) {
-            return 'Tomorrow';
-        } else if (date.isSame(moment().subtract(1, 'days'), 'day')) {
-            return 'Yesterday';
-        } else {
-            return date.format('MMMM Do YYYY'); // Default date format
-        }
-    }
-
-    function formatTime(dateTimeString) {
-        return moment(dateTimeString).format('hh:mm A'); // Time in 12-hour format
-    }
-
-
     return (
-        <div className={'md:hidden fixed top-0 left-0 h-screen w-screen z-10 '}>
+        <main className={`  ${openNavbar && 'fixed'}  top-0 left-0 h-screen w-screen oz-10 `}>
+            <div className={`md:w-[67%]  md:left-[8%]   absolute h-screen  w-screen mt-24 md:mt-0  p-4`}>
+                {children}
+            </div>
             <div
-                className={'flex  justify-between z-30 bg-white items-center top-0 left-0 fixed h-24 px-10 w-full bg-white shadow-xl shadow-blue-800/20 '}>
+                className={'flex md:hidden justify-between  bg-white items-center top-0 left-0 fixed h-24 px-10 w-full bg-white shadow-xl shadow-blue-800/20 '}>
                 <div>
                     <span onClick={() => setOpenNavbar(true)}><IoMenuOutline fontSize={40}/></span>
                 </div>
@@ -93,7 +76,7 @@ export default function SmallScreenNavbar() {
                             router.push(item.link);
                             setOpenNavbar(false)
                         }}
-                                                                     className={`flex justify-center items-center  ${pathname === item.link ? 'bg-[#17255a] text-white  rounded-r-xl hover:opacity-80' : 'text-[#abcadd] hover:scale-105'}`}>
+                                                                     className={`flex justify-center items-center  ${pathname === item.link || (item.link !== '/' && pathname.startsWith(item.link))? 'bg-[#17255a] text-white  rounded-r-xl hover:opacity-80' : 'text-[#abcadd] hover:scale-105'}`}>
                             <ListItemPrefix>
                                 <item.icon/>
                             </ListItemPrefix>
@@ -120,6 +103,7 @@ export default function SmallScreenNavbar() {
                     </div>
                 </div>
             </Drawer>
-        </div>
+
+        </main>
     )
 }

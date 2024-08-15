@@ -23,18 +23,20 @@ const fakeUsers = createUsers(2000);
 
 
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
-    <div className={'flex border-gray-800 rounded border-[2px]'}>
-        <input
-            type={'text'}
-           label={"Search"}
-            value={filterText}
-            onChange={onFilter}
-            placeholder={'search for project here'}
-           className={'border-none p-2 outline-none'}
-        />
-        <button className={'bg-red-800/60 p-2 text-gray-100'} onClick={onClear}>
-           clear
-        </button>
+    <div className={'w-full border-b-[0.93px] m-0 py-2 justify-end flex border-gray-500'}>
+        <div className={'flex gap-1'}>
+            <input
+                type={'text'}
+                label={"Search"}
+                value={filterText}
+                onChange={onFilter}
+                placeholder={'search for project here'}
+                className={' p-2 outline-none border-gray-400 rounded border-[1px]'}
+            />
+            {/*<button className={'bg-red-800/60 p-2 text-gray-100 rounded text-xs'} onClick={onClear}>*/}
+            {/*    clear*/}
+            {/*</button>*/}
+        </div>
     </div>
 );
 
@@ -56,11 +58,11 @@ const columns = [
     },
 ];
 
-export const CustomDataTable = ({componentData,componentColumns}) => {
+export const CustomDataTable = ({componentData, componentColumns, searchAttr}) => {
     const [filterText, setFilterText] = React.useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
     const filteredItems = componentData.filter(
-        item => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()),
+        item => item[searchAttr] && item[searchAttr].toLowerCase().includes(filterText.toLowerCase()),
     );
 
     const subHeaderComponentMemo = React.useMemo(() => {
@@ -76,14 +78,15 @@ export const CustomDataTable = ({componentData,componentColumns}) => {
         );
     }, [filterText, resetPaginationToggle]);
 
+    console.log(componentColumns)
     return (
         <DataTable
             columns={componentColumns}
             data={filteredItems}
             pagination
             paginationResetDefaultPage={resetPaginationToggle}
-            // subHeader
-            // subHeaderComponent={subHeaderComponentMemo}
+            subHeader
+            subHeaderComponent={subHeaderComponentMemo}
             selectableRows
             persistTableHead
         />

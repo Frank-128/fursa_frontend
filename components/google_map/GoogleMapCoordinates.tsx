@@ -1,11 +1,12 @@
 
-import React from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
-const mapContainerStyle = {
-    height: "400px",
-    width: "100%",
-};
+
+import React, { useRef, useEffect, useState } from 'react';
+import mapboxgl from 'mapbox-gl';
+
+// Set your Mapbox access token here
+mapboxgl.accessToken = 'pk.eyJ1IjoiZnJhbmstbmRhZ3VsYSIsImEiOiJjbHp0dWg3OWwwZnl1Mm1zNXB1ZTl6aWhwIn0.joE5kHvA2AgDXYTlp03ABw'; // Replace with your Mapbox Access Token
+
 
 const center = {
     lat: -3.745,
@@ -13,31 +14,45 @@ const center = {
 };
 
 const MapComponent = () => {
-    const [coordinates, setCoordinates] = React.useState(center);
+    const mapContainerRef = useRef(null);
+    const [map, setMap] = useState(null);
+    const [coordinates, setCoordinates] = useState(center);
 
-    const handleMapClick = (event) => {
-        const { latLng } = event;
-        const newCoords = {
-            lat: latLng.lat(),
-            lng: latLng.lng(),
-        };
-        setCoordinates(newCoords);
-        console.log("Coordinates:", newCoords); // Or handle as needed
-    };
+    useEffect(() => {
+        const mapInstance = new mapboxgl.Map({
+            container: mapContainerRef.current,
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [center.lng, center.lat],
+            zoom: 10
+        });
+
+        mapInstance.on('click', (event) => {
+            const newCoords = {
+                lat: event.lngLat.lat,
+                lng: event.lngLat.lng,
+            };
+            setCoordinates(newCoords);
+            console.log("Coordinates:", newCoords);
+        });
+
+        setMap(mapInstance);
+
+        return () => mapInstance.remove(); // Clean up on unmount
+    }, []);
+
+    useEffect(() => {
+        if (map) {
+            const marker = new mapboxgl.Marker()
+                .setLngLat([coordinates.lng, coordinates.lat])
+                .addTo(map);
+
+            // Remove the old marker when the coordinates change
+            return () => marker.remove();
+        }
+    }, [coordinates, map]);
 
     return (
-        <LoadScript
-            googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY" // Replace with your API Key
-        >
-            <GoogleMap
-                mapContainerStyle={mapContainerStyle}
-                center={center}
-                zoom={10}
-                onClick={handleMapClick}
-            >
-                <Marker position={coordinates} />
-            </GoogleMap>
-        </LoadScript>
+        <div ref={mapContainerRef} className={'h-96 w-full'} />
     );
 };
 

@@ -9,6 +9,8 @@ import { IoTelescopeOutline } from "react-icons/io5";
 import {projects} from '../../../../constants/projects'
 import {CustomDataTable} from '../../../../components/datatable/CustomDataTable'
 import {Chip} from '@material-tailwind/react'
+import moment from 'moment'
+
 export default function Projects() {
 
 
@@ -30,7 +32,7 @@ export default function Projects() {
       sortable: true,
     },
     {
-      name: 'Number of Plots',
+      name: 'Plots',
       selector: row => row.number_of_plots,
       sortable: true,
     },
@@ -54,14 +56,14 @@ export default function Projects() {
     },
     {
       name: 'Created At',
-      selector: row => row.created_at,
+      selector: row => moment(row.created_at).format('MM-D-YYYY'),
       sortable: true,
     },
   ]
 
   return (
-      <main className="flex  min-h-screen flex-col items-center">
-        <CustomDataTable componentData={projects} componentColumns={columns}  />
+      <main className="flex   flex-col items-center">
+        <CustomDataTable searchAttr={'name'} componentData={projects} componentColumns={columns}  />
 
       </main>
   );

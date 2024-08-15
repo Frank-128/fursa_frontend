@@ -13,8 +13,8 @@
 
 .main-loading {
     position: fixed;
-    top:0px;
-    z-index: 800;
+    top:0;
+    z-index: 99!important;
     left:0;
     display: flex;
     justify-content: center;
@@ -23,7 +23,7 @@
     margin: 0;
     width: 100vw;
     background-color: #1e1e1e;
-    opacity: 96%;
+    opacity: 100%;
     flex-direction: column;
 }
 
