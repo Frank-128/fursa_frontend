@@ -27,7 +27,7 @@ export default function SiteClearance() {
             name: 'Project Name',
             selector: row => row.project_name,
             cell:row=>(
-                <Link href={'/projects/details/'+row.id}>
+                <Link className={'text-[#17225a] '} href={'/projects/details/'+row.id}>
                     {row.project_name}
                 </Link>
             ),

@@ -28,7 +28,7 @@ export const projects = [
     },
     {
         "id":4,
-        "name": "Punda Milia",
+        "name": "Zebra",
         "location": "Ngorongoro",
         "size": "450 acres",
         "number_of_plots": 15,

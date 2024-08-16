@@ -4,9 +4,11 @@ import {CustomDataTable} from '@/components/datatable/CustomDataTable'
 import {Chip} from '@material-tailwind/react'
 import moment from 'moment'
 import {TableColumn} from 'react-data-table-component';
+import Link from "next/link";
 
 
 interface DataRow{
+  id:number;
   name:string;
   location:string;
   size:string;
@@ -22,8 +24,13 @@ export default function Projects() {
 
   const columns : TableColumn<DataRow>[] = [
     {
-      name: 'Name',
+      name: 'Project Name',
       selector: row => row.name,
+      cell:row=>(
+          <Link className={'text-[#17225a] '} href={'/projects/details/'+row.id}>
+            {row.name}
+          </Link>
+      ),
       sortable: true,
     },
     {
