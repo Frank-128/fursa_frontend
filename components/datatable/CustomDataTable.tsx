@@ -73,7 +73,6 @@ export const CustomDataTable = ({componentData, componentColumns, searchAttr}:Cu
         );
     }, [filterText, resetPaginationToggle]);
 
-    console.log(componentColumns)
     return (
         <DataTable
             columns={componentColumns}

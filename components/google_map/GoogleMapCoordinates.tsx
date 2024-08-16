@@ -38,7 +38,7 @@ const MapComponent = () => {
                 lng: event.lngLat.lng,
             };
             setCoordinates(newCoords);
-            console.log("Coordinates:", newCoords);
+
         });
 
         setMap(mapInstance);

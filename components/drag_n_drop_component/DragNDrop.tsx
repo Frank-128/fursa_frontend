@@ -28,7 +28,6 @@ const FileUpload = ({ title, files, setFiles, fileType='image' }:FileUploadProps
         maxFiles: 1,
         onDrop: (acceptedFiles, rejectedFiles) => {
             const validFiles = acceptedFiles.filter(file => {
-                console.log(file.size);
                 return file.size >= maxFileSize;
             });
 

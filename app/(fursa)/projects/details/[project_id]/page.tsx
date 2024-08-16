@@ -198,7 +198,7 @@ export default function Details({params}: { params: { project_id: string } }) {
 
                 <DialogHeader className={'flex justify-center'}>
                 <Typography variant="h5" className={'text-center'} color="blue-gray">
-                    Owner's Details
+                    Owner&apos;s Details
                 </Typography>
             </DialogHeader>
                 <DialogBody divider className="grid place-items-center gap-4">
