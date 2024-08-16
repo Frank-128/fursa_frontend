@@ -1,5 +1,4 @@
 "use client"
-import Image from "next/image";
 import {usePathname} from 'next/navigation';
 import { RiBuilding2Line } from "react-icons/ri";
 import { TbDeviceImacSearch } from "react-icons/tb";
@@ -7,9 +6,10 @@ import { MdDomainVerification } from "react-icons/md";
 import { TbFlagCancel } from "react-icons/tb";
 import { IoTelescopeOutline } from "react-icons/io5";
 import Link from 'next/link';
+import React from "react";
 
 
-export default function ProjectsLayout({children}) {
+export default function ProjectsLayout({children}:{children:React.ReactNode}) {
 
     const pathname = usePathname()
 
@@ -61,7 +61,7 @@ export default function ProjectsLayout({children}) {
                 <div className={' border-b-[0.9px] flex justify-around  border-gray-300 overflow-x-scroll'}>
                     {
                         project_links.map((item,index)=>(
-                            <Link href={item.link} className={` ${pathname === item.link && 'border-b-[2px] text-[#17225a] border-[#17225a]'} flex items-center gap-2 p-2 cursor-pointer`}>
+                            <Link key={index} href={item.link} className={` ${pathname === item.link && 'border-b-[2px] text-[#17225a] border-[#17225a]'} flex items-center gap-2 p-2 cursor-pointer`}>
                                 <item.icon />
                                 <span className={'hidden md:block'}>{item.name}</span>
                             </Link>

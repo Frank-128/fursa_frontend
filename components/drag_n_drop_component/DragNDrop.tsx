@@ -1,8 +1,21 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import Image from 'next/image';
 
-const FileUpload = ({ title, files, setFiles, fileType='image' }) => {
-    const [uploadStatus, setUploadStatus] = useState(false);
+interface ExtendedFile extends File {
+    preview: string;
+}
+
+
+interface FileUploadProps{
+    title: string;
+    files: ExtendedFile[];
+    setFiles: (files: ExtendedFile[]) => void;
+    fileType?: 'image' | 'pdf';
+}
+
+const FileUpload = ({ title, files, setFiles, fileType='image' }:FileUploadProps) => {
+
     const [errorMessage, setErrorMessage] = useState('');
     const maxFileSize = 60 * 1024;
 
@@ -33,7 +46,7 @@ const FileUpload = ({ title, files, setFiles, fileType='image' }) => {
         },
     });
 
-    const handleRemoveFile = (file) => {
+    const handleRemoveFile = (file:File) => {
         setFiles(files.filter(f => f !== file));
     };
 
@@ -53,7 +66,7 @@ const FileUpload = ({ title, files, setFiles, fileType='image' }) => {
                         >
                             <input {...getInputProps()} />
                             {isDragActive ? <p>Drop the {title} here...</p> :
-                                <p>Drag 'n' drop {title} here, or click to select {title}</p>}
+                                <p>Drag &apos;n&apos; drop {title} here, or click to select {title}</p>}
                         </div>
                         {
                             errorMessage && <p className={'text-red-500'}>{errorMessage}</p>
@@ -61,19 +74,21 @@ const FileUpload = ({ title, files, setFiles, fileType='image' }) => {
                     </>
                     :
                     <div>
-                        {uploadStatus && <p>Uploading...</p>}
+
                         <div className="preview-container" style={{ marginTop: '20px' }}>
                             {files.map(file => (
-                                <div key={file.name}
+                                <div key={file?.name}
                                      style={{ position: 'relative', display: 'inline-block', marginRight: '10px' }}>
                                     {
-                                        // 2. Conditional rendering based on `fileType`
+
                                         fileType === 'pdf' ? (
-                                            <p>{file.name}</p>
+                                            <p>{file?.name}</p>
                                         ) : (
-                                            <img
-                                                src={file.preview}
-                                                alt={file.name}
+                                            <Image
+                                                width={100}
+                                                height={100}
+                                                src={file?.preview}
+                                                alt={file?.name}
                                                 style={{ width: '500px', height: '200px', objectFit: 'cover' }}
                                             />
                                         )

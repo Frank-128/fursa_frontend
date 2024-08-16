@@ -16,7 +16,7 @@ export default function RightBar(){
     const [isCalendar,setIsCalendar] = useState(false);
     const [openRightBar,setOpenRightBar] = useState(false)
 
-    function formatDate(dateTimeString) {
+    function formatDate(dateTimeString:string) {
         const date = moment(dateTimeString);
 
         if (date.isSame(moment(), 'day')) {
@@ -30,10 +30,10 @@ export default function RightBar(){
         }
     }
 
-    function formatTime(dateTimeString) {
+    function formatTime(dateTimeString:string) {
         return moment(dateTimeString).format('hh:mm A'); // Time in 12-hour format
     }
-    
+
 
     return(
         <section className={'w-[25%] hidden md:block fixed h-[100vh] right-0 shadow-xl shadow-blue-800/20'}>
@@ -84,11 +84,11 @@ export default function RightBar(){
                  <div>
                      {
                          tasks.map((item,index)=>(
-                             <div className={'flex flex-col m-2 border-b-[0.8px] border-gray-300'}>
+                             <div key={index} className={'flex flex-col m-2 border-b-[0.8px] border-gray-300'}>
                                  <span className={'font-bold py-3'}>{formatDate(item.date)}</span>
                                  <div className={'flex items-center gap-4'}>
                                 <span className={'text-gray-400 text-xs'}>
-                                    {formatTime(item.time)}
+                                    {formatTime(item.date)}
                                 </span>
                                      <span className={'text-gray-800 text-sm'}>
                                     {item.description}

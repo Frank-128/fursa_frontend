@@ -1,21 +1,26 @@
 "use client"
-import Image from "next/image";
-import {usePathname} from 'next/navigation';
-import { RiBuilding2Line } from "react-icons/ri";
-import { TbDeviceImacSearch } from "react-icons/tb";
-import { MdDomainVerification } from "react-icons/md";
-import { TbFlagCancel } from "react-icons/tb";
-import { IoTelescopeOutline } from "react-icons/io5";
-import {projects} from '../../../../constants/projects'
-import {CustomDataTable} from '../../../../components/datatable/CustomDataTable'
+import {projects} from '@/constants/projects'
+import {CustomDataTable} from '@/components/datatable/CustomDataTable'
 import {Chip} from '@material-tailwind/react'
 import moment from 'moment'
+import {TableColumn} from 'react-data-table-component';
+
+
+interface DataRow{
+  name:string;
+  location:string;
+  size:string;
+  number_of_plots:number;
+  status:boolean;
+  created_at:string;
+
+}
 
 export default function Projects() {
 
 
 
-  const columns = [
+  const columns : TableColumn<DataRow>[] = [
     {
       name: 'Name',
       selector: row => row.name,

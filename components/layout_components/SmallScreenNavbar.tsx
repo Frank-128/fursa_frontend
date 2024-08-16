@@ -1,57 +1,35 @@
 'use client'
 import {useState} from 'react'
 import {usePathname, useRouter} from 'next/navigation'
-import {sidebar_links} from '../../constants/links'
-import Link from 'next/link'
+import {sidebar_links} from '@/constants/links'
 import {Drawer} from '@material-tailwind/react'
 import {
     Popover,
     PopoverHandler,
     PopoverContent,
-    Button,
     Avatar,
     List,
     ListItem,
     ListItemPrefix
 } from "@material-tailwind/react";
-import {IoCalendarOutline, IoSettingsOutline, IoMenuOutline, IoListOutline} from "react-icons/io5";
+import {IoCalendarOutline, IoSettingsOutline, IoMenuOutline} from "react-icons/io5";
 import { BiMessageSquareDetail } from "react-icons/bi";
 import { CiBellOn } from "react-icons/ci";
 import {RiLogoutCircleRLine} from "react-icons/ri";
-import {tasks} from '../../constants/tasks'
-import moment from 'moment'
+
 
 
 export default function SmallScreenNavbar() {
     const [openNavbar, setOpenNavbar] = useState(false)
     const pathname = usePathname()
     const router = useRouter()
-    const [isCalendar, setIsCalendar] = useState(false);
-    const [openRightBar, setOpenRightBar] = useState(false)
 
-    function formatDate(dateTimeString) {
-        const date = moment(dateTimeString);
-
-        if (date.isSame(moment(), 'day')) {
-            return 'Today';
-        } else if (date.isSame(moment().add(1, 'days'), 'day')) {
-            return 'Tomorrow';
-        } else if (date.isSame(moment().subtract(1, 'days'), 'day')) {
-            return 'Yesterday';
-        } else {
-            return date.format('MMMM Do YYYY'); // Default date format
-        }
-    }
-
-    function formatTime(dateTimeString) {
-        return moment(dateTimeString).format('hh:mm A'); // Time in 12-hour format
-    }
 
 
     return (
         <div className={'md:hidden fixed top-0 left-0 h-screen w-screen z-10 '}>
             <div
-                className={'flex  justify-between z-30 bg-white items-center top-0 left-0 fixed h-24 px-10 w-full bg-white shadow-xl shadow-blue-800/20 '}>
+                className={'flex  justify-between z-30  items-center top-0 left-0 fixed h-24 px-10 w-full bg-white shadow-xl shadow-blue-800/20 '}>
                 <div>
                     <span onClick={() => setOpenNavbar(true)}><IoMenuOutline fontSize={40}/></span>
                 </div>

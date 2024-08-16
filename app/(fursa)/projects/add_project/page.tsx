@@ -1,18 +1,20 @@
 'use client'
 import {useState} from 'react'
 import {Input,Select,Option} from '@material-tailwind/react'
-import Dropzone from 'react-dropzone'
 import FileUpload from '../../../../components/drag_n_drop_component/DragNDrop'
-import MapComponent from '../../../../components/google_map/GoogleMapCoordinates'
 
+
+interface ExtendedFile extends File {
+    preview: string;
+}
 
 export default  function AddProject(){
-    const [files, setFiles] = useState([]);
-    const [projectPictures, setProjectPictures] = useState([])
-    const [projectCoordinates, setProjectCoordinates] = useState([])
-    const [contract, setContract] = useState([])
-    const [townplan, setTownplan] = useState([])
-    const [searchFromMinistry, setSearchFromMinistry] = useState([])
+    const [files, setFiles] = useState<ExtendedFile[]>([]);
+    const [projectPictures, setProjectPictures] = useState<ExtendedFile[]>([]);
+    const [projectCoordinates, setProjectCoordinates] = useState<ExtendedFile[]>([]);
+    const [contract, setContract] = useState<ExtendedFile[]>([]);
+    const [townplan, setTownplan] = useState<ExtendedFile[]>([]);
+    const [searchFromMinistry, setSearchFromMinistry] = useState<ExtendedFile[]>([]);
 
     return(
         <div className={'flex flex-col gap-y-4 items-center justify-center w-full pb-10 '}>
@@ -113,7 +115,7 @@ export default  function AddProject(){
                     <div className={'flex gap-4 md:flex-row flex-col'}>
 
 
-                        <FileUpload title={'map'} files={files} setFiles={setFiles}/>
+                        <FileUpload title={'map'}  files={files} setFiles={setFiles}/>
                         <FileUpload title={'project picture'} files={projectPictures} setFiles={setProjectPictures}
                                     fileType={'pdf'}/>
 
@@ -129,7 +131,7 @@ export default  function AddProject(){
 
             {/* Owner's details */}
             <div className={'w-full'}>
-                Owner's Details
+                Owner Details
                 <div className={'p-2 border-[0.8px] border-gray-600 space-y-4 shadow-md rounded-sm shadow-blue-800/20'}>
                     <div className={'flex gap-4 md:flex-row flex-col'}>
                         <Input label={'Full Name'}/>
@@ -143,8 +145,8 @@ export default  function AddProject(){
                     </div>
                     <div className={'flex gap-4 md:flex-row flex-col'}>
                         <Select label={"Identifaction type"}>
-                            <Option>Driver's licence</Option>
-                            <Option>Voter's Card</Option>
+                            <Option>Driver licence</Option>
+                            <Option>Voter Card</Option>
                             <Option>NIDA</Option>
                             <Option>Passport</Option>
                         </Select>
@@ -175,7 +177,7 @@ export default  function AddProject(){
 
             {/*  Supervisor/Broker's Information  */}
             <div className={'w-full'}>
-                Broker's/Supervisor Details
+                Broker/Supervisor Details
                 <div className={'p-2 border-[0.8px] border-gray-600 space-y-4 shadow-md rounded-sm shadow-blue-800/20'}>
                     <div className={'flex gap-4 md:flex-row flex-col'}>
                         <Input label={'Full Name'}/>

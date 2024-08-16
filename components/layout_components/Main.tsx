@@ -1,32 +1,27 @@
 'use client'
-import {useState} from 'react'
+import React, {useState} from 'react'
 import {usePathname, useRouter} from 'next/navigation'
-import {sidebar_links} from '../../constants/links'
-import Link from 'next/link'
+import {sidebar_links} from '@/constants/links'
 import {Drawer} from '@material-tailwind/react'
 import {
     Popover,
     PopoverHandler,
     PopoverContent,
-    Button,
     Avatar,
     List,
     ListItem,
     ListItemPrefix
 } from "@material-tailwind/react";
-import {IoCalendarOutline, IoSettingsOutline, IoMenuOutline, IoListOutline} from "react-icons/io5";
+import {IoCalendarOutline, IoSettingsOutline, IoMenuOutline} from "react-icons/io5";
 import {BiMessageSquareDetail} from "react-icons/bi";
 import {CiBellOn} from "react-icons/ci";
 import {RiLogoutCircleRLine} from "react-icons/ri";
-import {tasks} from '../../constants/tasks'
-import moment from 'moment'
 
-export default function Main({children}) {
+
+export default function Main({children}:{children:React.ReactNode}) {
     const [openNavbar, setOpenNavbar] = useState(false)
     const pathname = usePathname()
     const router = useRouter()
-    const [isCalendar, setIsCalendar] = useState(false);
-    const [openRightBar, setOpenRightBar] = useState(false)
 
     return (
         <main className={`  ${openNavbar && 'fixed'}  top-0 left-0 h-screen w-screen oz-10 `}>
@@ -34,7 +29,7 @@ export default function Main({children}) {
                 {children}
             </div>
             <div
-                className={'flex md:hidden justify-between  bg-white items-center top-0 left-0 fixed h-24 px-10 w-full bg-white shadow-xl shadow-blue-800/20 '}>
+                className={'flex md:hidden justify-between  bg-white items-center top-0 left-0 fixed h-24 px-10 w-full shadow-xl shadow-blue-800/20 '}>
                 <div>
                     <span onClick={() => setOpenNavbar(true)}><IoMenuOutline fontSize={40}/></span>
                 </div>

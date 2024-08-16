@@ -1,28 +1,33 @@
 "use client"
-import Image from "next/image";
-import {usePathname} from 'next/navigation';
-import {RiBuilding2Line} from "react-icons/ri";
-import {TbDeviceImacSearch} from "react-icons/tb";
-import {MdDomainVerification} from "react-icons/md";
-import {TbFlagCancel} from "react-icons/tb";
-import {IoTelescopeOutline} from "react-icons/io5";
-import {survey} from '../../../../../constants/survey'
-import {CustomDataTable} from '../../../../../components/datatable/CustomDataTable'
+import {survey} from '@/constants/survey'
+import {CustomDataTable} from '@/components/datatable/CustomDataTable'
 import {Chip,Tooltip,IconButton} from '@material-tailwind/react'
-import { MdModeEditOutline,MdOutlineDeleteOutline,MdOutlineDomainVerification } from "react-icons/md";
+import { MdModeEditOutline,MdOutlineDeleteOutline } from "react-icons/md";
 import { TiTick } from "react-icons/ti";
 import Link from 'next/link'
 import moment from 'moment'
+import {TableColumn} from 'react-data-table-component';
+
+
+interface DataRow{
+    id:number,
+    project_name:string;
+    project_manager:string;
+    budget:string;
+    status:string;
+    created_at:string;
+
+}
 
 export default function Survey() {
 
 
-    const columns = [
+    const columns:TableColumn<DataRow>[] = [
         {
             name: 'Project Name',
             selector: row => row.project_name,
             cell:row=>(
-                <Link href={'/projects/details/'+row.id}>
+                <Link className={'text-[#17225a] '} href={'/projects/details/'+row.id}>
                     {row.project_name}
                 </Link>
             ),
@@ -63,7 +68,7 @@ export default function Survey() {
         },
         {
             name: 'Action',
-            cell: row => (
+            cell: () => (
                 <div className={'flex '}>
                     <Tooltip content={"accept"}>
                         <IconButton variant={'text'}>

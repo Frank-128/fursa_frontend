@@ -2,7 +2,7 @@ export default function Loading(){
     return (
         <main className={'main-loading'}>
             <div className={'febo-container'}>
-                <h1 class="febo-text">FEBO</h1>
+                <h1 className="febo-text">FEBO</h1>
 
             </div>
 
