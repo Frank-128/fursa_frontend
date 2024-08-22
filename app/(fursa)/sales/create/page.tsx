@@ -399,7 +399,7 @@ export default function Create() {
 
                             </div>:
                                 <div className={'flex gap-4 md:flex-row flex-col'}>
-                                    <Select label={'Project'} classname={'w-full'} >
+                                    <Select label={'Project'} className={'w-full'} >
                                         {
                                             projects.map((item,index)=>(
                                                 <Option key={index} value={item.name}>{item.name}</Option>

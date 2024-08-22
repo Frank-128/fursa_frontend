@@ -6,11 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="3790acd0-ec0b-4db9-a4e3-bcf427e949cc" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(fursa)/projects/details/[project_id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(fursa)/projects/details/[project_id]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(fursa)/sales/create/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(fursa)/sales/create/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/layout_components/Main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/layout_components/Main.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/layout_components/Sidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/layout_components/Sidebar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/constants/links.ts" beforeDir="false" afterPath="$PROJECT_DIR$/constants/links.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +23,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="/Applications/XAMPP/xamppfiles/bin/php" />
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 3
@@ -44,11 +46,19 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "reference.webide.settings.project.settings.php",
-    "ts.external.directory.path": "/Users/mac/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "ts.external.directory.path": "/Users/mac/Documents/full stacks/fursa/fursa_frontend/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/(fursa)" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="fursa_frontend" />
@@ -166,6 +176,10 @@
       <updated>1724306496930</updated>
       <workItem from="1724306501575" duration="322000" />
       <workItem from="1724306912268" duration="230000" />
+      <workItem from="1724307187432" duration="1877000" />
+      <workItem from="1724309437185" duration="32000" />
+      <workItem from="1724309509808" duration="30000" />
+      <workItem from="1724327859289" duration="4201000" />
     </task>
     <servers />
   </component>

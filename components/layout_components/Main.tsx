@@ -68,14 +68,14 @@ export default function Main({children}:{children:React.ReactNode}) {
                 <List className={''}>
                     {
                         sidebar_links.map((item, index) => <ListItem key={index} onClick={() => {
-                            router.push(item.link);
+                           item && router.push(item?.link);
                             setOpenNavbar(false)
                         }}
-                                                                     className={`flex justify-center items-center  ${pathname === item.link || (item.link !== '/' && pathname.startsWith(item.link))? 'bg-[#17255a] text-white  rounded-r-xl hover:opacity-80' : 'text-[#abcadd] hover:scale-105'}`}>
+                                                                     className={`flex justify-center items-center  ${pathname === item?.link || (item?.link !== '/' && pathname.startsWith(item?.link as string))? 'bg-[#17255a] text-white  rounded-r-xl hover:opacity-80' : 'text-[#abcadd] hover:scale-105'}`}>
                             <ListItemPrefix>
-                                <item.icon/>
+                                {item && <item.icon/>}
                             </ListItemPrefix>
-                            <span>{item.name}</span>
+                            <span>{item?.name}</span>
                         </ListItem>)
                     }
                 </List>

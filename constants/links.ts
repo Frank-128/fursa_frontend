@@ -5,6 +5,7 @@ import { FaUsers } from "react-icons/fa";
 import { TbReport } from "react-icons/tb";
 import { CiTrophy } from "react-icons/ci";
 import { BsGraphUpArrow } from "react-icons/bs";
+import { ImUsers } from "react-icons/im";
 export const sidebar_links = [
     {
         name:'Dashboard',
@@ -26,6 +27,11 @@ export const sidebar_links = [
         name:'Payments',
         icon:BsCashCoin,
         link:'/payments'
+    },
+    {
+        name:'Staff',
+        icon:ImUsers,
+        link:'/staff'
     },
     {
         name:'Clients',
