@@ -1,9 +1,19 @@
 'use client'
 import {projects} from '@/constants/projects'
 import Image from 'next/image'
-import {Button, Chip, Dialog, DialogBody, DialogFooter, DialogHeader, Typography} from "@material-tailwind/react";
+import {
+    Button,
+    Chip,
+    Dialog,
+    DialogBody,
+    DialogFooter,
+    DialogHeader, List, ListItem,
+    Popover, PopoverContent, PopoverHandler,
+    Typography
+} from "@material-tailwind/react";
 import {FaCopy, FaDownload, FaEdit} from "react-icons/fa";
-import {useState} from "react";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import {useMemo, useState} from "react";
 import Link from "next/link";
 
 export default function Details({params}: { params: { project_id: string } }) {
@@ -11,9 +21,53 @@ export default function Details({params}: { params: { project_id: string } }) {
     const project = projects.filter((item) => item.id === Number(params.project_id))[0]
     const [showProfile, setShowProfile] = useState(false)
     const [showPlot,setShowPlot] = useState(false)
+    const [selectedPlots,setSelectedPlots] = useState<{index:number,plotNo:number}[]>([]);
+    const [isPopoverOpen,setIsPopoverOpen] = useState(false)
+    const [selectedPlot, setSelectedPlot] = useState<number | null>(null)
+    const showMergeContainer = useMemo(()=>selectedPlots.length > 0,[selectedPlots])
+
+
+    const handleSelected = (id: number,plotNo:number) => {
+        setSelectedPlots(prevSelectedPlots => {
+            if (prevSelectedPlots.some(item => item.index === id)) {
+                // Remove the object if it already exists
+                return prevSelectedPlots.filter(item => item.index !== id);
+            } else {
+                // Add a new object to the array
+                return [...prevSelectedPlots, { index: id, plotNo:plotNo }];
+            }
+        });
+    };
+
 
     return (
-        <div className={'flex flex-col gap-y-4 pb-5'}>
+        <div className={'flex flex-col gap-y-4 pb-5 relative'}>
+            {
+                showMergeContainer &&
+                <div className={' h-24 rounded-lg p-2 z-[99] bg-[#17225a] md:w-[55%] flex flex-col justify-between w-[90%] text-gray-300 shadow-lg shadow-light-blue-800/20 fixed '}>
+                    {
+                        selectedPlots.length > 1 ?
+                            <div className={'flex justify-between sm:text-sm text-xs'}>
+                                <div><span className={'text-blue-600 cursor-pointer hover:underline '}>Merge</span>
+                                    &nbsp;plots
+                                    {
+                                        selectedPlots.map((item,index)=><span>&nbsp;{item.plotNo},</span>)
+                                    }
+                                </div>
+                                <span className={'sm:text-sm text-xs text-blue-600 hover:underline cursor-pointer'}>+ create sale</span>
+                            </div> :
+                            <div className={'flex  justify-between'}>
+
+                                <span className={'sm:text-sm text-xs text-blue-600 hover:underline cursor-pointer'}>+ create sale</span>
+                            </div>
+                    }
+                    <div onClick={()=>setSelectedPlots([])} className={'bg-red-400 cursor-pointer rounded text-center p-1 text-white w-1/6 self-end'}>
+                        clear
+                    </div>
+                </div>
+
+            }
+
             <div className={'flex gap-2'}>
                 <h1 className={'md:text-3xl text-xl font-bold text-gray-700'}>{project.name} Project </h1>
                 {!project.status ? <Chip value={'ongoing'} color={'orange'}/> :
@@ -161,19 +215,49 @@ export default function Details({params}: { params: { project_id: string } }) {
 
 
             <div
-                className={'grid md:grid-cols-4 grid-cols-2  w-full h-[50vh] overflow-y-scroll bg-gray-100 rounded gap-3 p-2'}>
+                className={'grid md:grid-cols-4 grid-cols-2  w-full h-[50vh] overflow-y-scroll bg-gray-100  rounded gap-3 p-2'}>
                 {Array(project.number_of_plots).fill(null).map((_, index) => <div
                     key={index}
-                    onClick={()=>setShowPlot(true)}
+
                     // onDoubleClick={()=>{
                     //     alert('hi')
                     // }}
-                    className={index === 3 ? 'md:w-36 hover:scale-95 relative text-gray-700 font-bold hover:shadow-xl hover:outline hover:outline-red-800/20 hover:shadow-red-800/20 cursor-pointer duration-300 transition ease-in-out md:h-28 w-20 h-16 flex items-center justify-center  shadow-md bg-green-500/20 shadow-blue-800/20 border-[0.8px] rounded' : 'md:w-36 hover:scale-105 hover:shadow-xl hover:outline hover:outline-yellow-800/20 hover:shadow-yellow-800/20 cursor-pointer duration-300 transition ease-in-out md:h-28 w-20 h-16 flex items-center justify-center rounded shadow-md bg-gray-500/20 shadow-blue-800/20 border-[0.8px]  text-gray-700'}>
+                    className={index === 3 ? `md:w-36 hover:scale-95  relative text-gray-700 font-bold hover:shadow-xl hover:outline hover:outline-red-800/20 hover:shadow-red-800/20 cursor-pointer duration-300 transition ease-in-out md:h-28 w-20 h-16 flex items-center justify-center  shadow-md bg-green-500/20 shadow-blue-800/20 border-[0.8px] rounded`
+                        :
+                        ` ${selectedPlots.some( item=>item.index === index) && 'outline-yellow-800/20 shadow-yellow-800/20 shadow-xl scale-105 outline'} md:w-36  cursor-pointer duration-300 transition ease-in-out md:h-28 w-20 h-16 flex items-center justify-center rounded relative shadow-md bg-gray-500/20 shadow-blue-800/20 border-[0.8px]  text-gray-700`}>
                     Plot {index + 1}
                     {index === 3 &&
                         <Image alt={"sold"} src={'/sold.png'}
                                className={'w-20 md:w-36 h-16 opacity-20 md:h-28 absolute'} width={100}
                                height={100}/>}
+                    <Popover placement={'bottom-end'} open={isPopoverOpen && index === selectedPlot} handler={()=>setIsPopoverOpen(false)}>
+                        <PopoverHandler onClick={()=> {
+                            setIsPopoverOpen(true)
+                            setSelectedPlot(index)
+                        }}>
+                          <span  className={'absolute top-2 right-1'}>
+                        <BsThreeDotsVertical/>
+                    </span>
+                        </PopoverHandler>
+                        <PopoverContent className={'p-1'}>
+                            <List className={
+                                'p-0'
+                            }>
+                                <ListItem onClick={()=> {
+                                    handleSelected(index,index+1);
+                                    setIsPopoverOpen(false)
+                                }}>
+                                    {
+                                        selectedPlots.some( item=>item.index === index) && (index === selectedPlot) ?
+                                    "deselect" :"select"
+                                    }
+                                        </ListItem>
+                                <ListItem onClick={() =>  setShowPlot(true) }>view</ListItem>
+                                <ListItem>create sale</ListItem>
+                            </List>
+                        </PopoverContent>
+                    </Popover>
+
                 </div>)}
             </div>
             <div className={'flex md:flex-row flex-col gap-3'}>
@@ -181,14 +265,20 @@ export default function Details({params}: { params: { project_id: string } }) {
                     <h1>Photo of the project</h1>
                     <Image alt={"kiwanja"} src={'/kiwanja.jpg'} width={200} height={200}
                            className={'object-cover w-[90vw] md:w-[40vw] h-[40vh] '}/>
+                    <span className={'absolute top-8 cursor-pointer left-5 bg-[#abcabc] rounded-md p-2'}>
+                        <FaEdit color={'white'}/>
+                    </span>
                     <span className={'absolute top-8 cursor-pointer right-5 bg-[#17225a] rounded-md p-2'}>
-                        <FaDownload color={'white'}  />
+                        <FaDownload color={'white'}/>
                     </span>
                 </div>
                 <div className={'relative'}>
                     <h1>Map of the project</h1>
                     <Image alt={"ramani"} src={'/ramani.jpg'} width={200} height={200}
                            className={'object-cover w-[90vw] md:w-[40vw] h-[40vh]'}/>
+                    <span className={'absolute top-8 cursor-pointer left-5 bg-[#abcabc] rounded-md p-2'}>
+                        <FaEdit color={'white'}/>
+                    </span>
                     <span className={'absolute top-8 cursor-pointer right-5 bg-[#17225a] rounded-md p-2'}>
                         <FaDownload color={'white'}/>
                     </span>
