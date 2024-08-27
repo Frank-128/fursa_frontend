@@ -18,6 +18,9 @@ import {
     IconButton,
     Tooltip,
   } from "@material-tailwind/react";
+  import Link from "next/link";
+import { AddRole } from "@/components/add_role/AddRole";
+import { useState } from "react";
 
   const TABS = [
     {
@@ -85,32 +88,36 @@ import {
   ];
 
   export default function Staff() {
+    const [open,setOpen]=useState(false)
     return (
         <Card className="h-full w-full rounded-none">
-          <CardHeader floated={false} shadow={false} className="rounded-none">
-            <div className="mb-2 flex items-center justify-between gap-8">
-              <div>
+          <CardHeader floated={false} shadow={false} className="rounded-none space-y-2  ">
+            <div className="flex items-center justify-between gap-8">
+              <div className="flex-row flex gap-x-4">
                 <Typography className={'font-helvetica font-bold'}  color="blue-gray">
                   Staff list
                 </Typography>
+                <Typography onClick={()=>setOpen(true)} className={'font-helvetica cursor-pointer  hover:underline text-blue-500'} >
+                  + role
+                </Typography>
               </div>
               <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                <Button className="flex font-helvetica items-center gap-3 bg-[#17255a] text-gray-200" size="sm">
+                <Link href='/staff/create' className="flex font-helvetica items-center gap-3 bg-[#17255a] text-gray-200 p-2 rounded" >
                   <IoMdPersonAdd strokeWidth={2} className="h-4 w-4" /> Add member
-                </Button>
+                </Link>
               </div>
             </div>
-            <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-              <Tabs value="all" className="w-full md:w-max h-fit">
+            <div className="flex flex-col h-48 md:h-fit md:items-center  md:justify-between  md:flex-row  ">
+              <Tabs value="all" className="w-full md:w-max md:h-24 ">
                 <TabsHeader>
                   {TABS.map(({ label, value }) => (
-                      <Tab className={'font-helvetica'} key={value} value={value}>
+                      <Tab className={'font-helvetica z-0'} key={value} value={value}>
                         &nbsp;&nbsp;{label}&nbsp;&nbsp;
                       </Tab>
                   ))}
                 </TabsHeader>
               </Tabs>
-              <div className="w-full md:w-72">
+              <div className="w-full flex md:items-start md:h-24 md:w-72 ">
                 <Input
                     label="Search"
                     icon={<HiMagnifyingGlass className="h-5 w-5" />}
@@ -118,8 +125,8 @@ import {
               </div>
             </div>
           </CardHeader>
-          <CardBody className="overflow-scroll px-0">
-            <table className="mt-4 w-full min-w-max table-auto text-left">
+          <CardBody className="overflow-scroll py-0  px-0">
+            <table className="w-full min-w-max table-auto text-left">
               <thead>
               <tr>
                 {TABLE_HEAD.map((head) => (
@@ -220,6 +227,7 @@ import {
               )}
               </tbody>
             </table>
+            <AddRole open={open} setOpen={setOpen} />
           </CardBody>
           <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
             <Typography className={'font-helvetica'} variant="small" color="blue-gray" >

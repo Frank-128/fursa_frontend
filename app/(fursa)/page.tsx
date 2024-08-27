@@ -9,10 +9,10 @@ export default function Home() {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setCurrentTime(moment()); // Update the current time every minute
-    }, 60000); // 60000 milliseconds = 1 minute
+      setCurrentTime(moment());
+    }, 60000); 
 
-    return () => clearInterval(intervalId); // Cleanup on component unmount
+    return () => clearInterval(intervalId); 
   }, []);
   return (
       <main className="flex min-h-screen flex-col items-center  ">
@@ -48,6 +48,11 @@ export default function Home() {
               <CountUp end={400}   duration={5} />
               </b>
           </div>
+        </div>
+
+        <div className="w-full py-4">
+          <h1 className='text-xl text-gray-700 self-start '>Client activities</h1>
+
         </div>
 
       </main>

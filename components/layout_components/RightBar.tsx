@@ -11,10 +11,19 @@ import Link from 'next/link'
 import {sidebar_links} from '../../constants/links'
 import {tasks} from '../../constants/tasks'
 import Image from 'next/image'
+import { globalStore } from '@/context/store';
+import { useRouter } from 'next/navigation';
 
 export default function RightBar(){
     const [isCalendar,setIsCalendar] = useState(false);
     const [openRightBar,setOpenRightBar] = useState(false)
+    
+    const route = useRouter()
+    
+    const logout = globalStore(state=>state.logout)
+    const user = globalStore(state=>state.user)
+    
+
 
     function formatDate(dateTimeString:string) {
         const date = moment(dateTimeString);
@@ -34,15 +43,17 @@ export default function RightBar(){
         return moment(dateTimeString).format('hh:mm A'); // Time in 12-hour format
     }
 
+    
 
+    console.log(user)
     return(
         <section className={'w-[25%] hidden md:block fixed h-[100vh] right-0 shadow-xl shadow-blue-800/20'}>
         <div className={'p-4 items-center flex gap-4 shadow-xl shadow-blue-800/20'}>
-            <Image src={'/amandla.jpg'} className={'rounded-full w-12 h-12 object-cover'} width={100} height={100} alt={'profile_pic'} />
+            <Image src={'http://localhost:8000/'+user?.profile_image} className={'rounded-full w-12 h-12 object-cover'} width={100} height={100} alt={'profile_pic'} />
             <div className={'flex justify-between items-center w-full '}>
                 <div className={'flex flex-col'}>
                     <span className={'text-xs'}>Hello,</span>
-                    <span className={'text-sm'}>Violet Green</span>
+                    <span className={'text-xs'}>{user?.first_name+ " "+user?.last_name}</span>
                 </div>
                 <div className={'flex gap-3'}>
                     <span>
@@ -51,7 +62,10 @@ export default function RightBar(){
                     <span>
                         <CiBellOn/>
                     </span>
-                    <span>
+                    <span className='cursor-pointer' onClick={()=>{
+                        route.push('/signin')
+                        logout()
+                        }}>
                         <IoIosLogOut/>
                     </span>
 

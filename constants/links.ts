@@ -10,42 +10,50 @@ export const sidebar_links = [
     {
         name:'Dashboard',
         icon:MdDashboard,
-        link:'/'
+        link:'/',
+        permission:"all"
     },
     {
         name:'Projects',
         icon:RiLandscapeLine,
-        link:'/projects'
+        link:'/projects',
+        permission:"all"
     },
     ,
     {
         name:'Sales',
         icon:BsGraphUpArrow,
-        link:'/sales'
+        link:'/sales',
+        permission:"all"
     },
     {
         name:'Payments',
         icon:BsCashCoin,
-        link:'/payments'
+        link:'/payments',
+        permission:"payments.view_payments"
     },
     {
         name:'Staff',
         icon:ImUsers,
-        link:'/staff'
+        link:'/staff',
+        permission:"custom_user.view_customuser"
     },
     {
         name:'Clients',
         icon:FaUsers,
-        link:'/clients'
+        link:'/clients',
+        permission:"all"
     },
     {
         name:'Promotions',
         icon:CiTrophy,
-        link:'/promotions'
+        link:'/promotions',
+        permission:"all"
     },
     {
         name:'Reports',
         icon:TbReport,
-        link:'/reports'
+        link:'/reports',
+        permission:"reports.view_reports"
     },
 ]
