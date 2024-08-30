@@ -56,7 +56,7 @@ const FilterComponent = ({ filterText, onFilter }:FilterComponentProps) => (
 export const CustomDataTable = ({componentData, componentColumns, searchAttr}:CustomDataTableProps) => {
     const [filterText, setFilterText] = React.useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
-    const filteredItems = componentData.filter(
+    const filteredItems = componentData?.filter(
         item => item[searchAttr] && item[searchAttr].toLowerCase().includes(filterText.toLowerCase()),
     );
 

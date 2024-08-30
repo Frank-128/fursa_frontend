@@ -21,6 +21,10 @@ import {
   import Link from "next/link";
 import { AddRole } from "@/components/add_role/AddRole";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { globalStore } from "@/context/store";
+import api from "@/axiosInstance";
 
   const TABS = [
     {
@@ -39,59 +43,39 @@ import { useState } from "react";
 
   const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
 
-  const TABLE_ROWS = [
-    {
-      img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-      name: "John Michael",
-      email: "john@creative-tim.com",
-      job: "Manager",
-      org: "Organization",
-      online: true,
-      date: "23/04/18",
-    },
-    {
-      img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
-      name: "Alexa Liras",
-      email: "alexa@creative-tim.com",
-      job: "Programator",
-      org: "Developer",
-      online: false,
-      date: "23/04/18",
-    },
-    {
-      img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
-      name: "Laurent Perrier",
-      email: "laurent@creative-tim.com",
-      job: "Executive",
-      org: "Projects",
-      online: false,
-      date: "19/09/17",
-    },
-    {
-      img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
-      name: "Michael Levi",
-      email: "michael@creative-tim.com",
-      job: "Programator",
-      org: "Developer",
-      online: true,
-      date: "24/12/08",
-    },
-    {
-      img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
-      name: "Richard Gran",
-      email: "richard@creative-tim.com",
-      job: "Manager",
-      org: "Executive",
-      online: false,
-      date: "04/10/21",
-    },
-  ];
+  
 
   export default function Staff() {
     const [open,setOpen]=useState(false)
+    const [pageNo,setPageNo] = useState(1)
+    const [internal,setInternal] = useState("all")
+
+    const token = globalStore(state=>state.token)
+
+    const getStaff = async ()=>{ 
+        
+      
+        
+      const {data} = await api.get('user/staff/?page='+pageNo,{
+      headers:{
+          Authorization:`Bearer ${token}`
+      }
+
+     
+  })
+  return data
+
+}
+
+const { data, error, isLoading } = useQuery({
+  queryKey: ['getStaffs',pageNo], 
+  queryFn: getStaff,        
+  refetchOnWindowFocus: true,
+});
+    
     return (
-        <Card className="h-full w-full rounded-none">
-          <CardHeader floated={false} shadow={false} className="rounded-none space-y-2  ">
+        <Card className="h-fit w-full rounded-none">
+          <CardHeader floated={false} shadow={false} className="rounded-none space-y-2 p-2 ">
             <div className="flex items-center justify-between gap-8">
               <div className="flex-row flex gap-x-4">
                 <Typography className={'font-helvetica font-bold'}  color="blue-gray">
@@ -107,11 +91,11 @@ import { useState } from "react";
                 </Link>
               </div>
             </div>
-            <div className="flex flex-col h-48 md:h-fit md:items-center  md:justify-between  md:flex-row  ">
+            <div className="flex flex-col  md:h-fit md:items-center gap-y-2 md:justify-between  md:flex-row  ">
               <Tabs value="all" className="w-full md:w-max md:h-24 ">
                 <TabsHeader>
                   {TABS.map(({ label, value }) => (
-                      <Tab className={'font-helvetica z-0'} key={value} value={value}>
+                      <Tab className={'font-helvetica z-0'} onClick={()=>setInternal(value)} key={value} value={value}>
                         &nbsp;&nbsp;{label}&nbsp;&nbsp;
                       </Tab>
                   ))}
@@ -125,8 +109,8 @@ import { useState } from "react";
               </div>
             </div>
           </CardHeader>
-          <CardBody className="overflow-scroll py-0  px-0">
-            <table className="w-full min-w-max table-auto text-left">
+          <CardBody className="overflow-scroll h-[45vh] py-0  px-0">
+            <table className="w-full min-w-max   table-auto text-left">
               <thead>
               <tr>
                 {TABLE_HEAD.map((head) => (
@@ -146,25 +130,31 @@ import { useState } from "react";
               </tr>
               </thead>
               <tbody>
-              {TABLE_ROWS.map(
-                  ({ img, name, email, job, org, online, date }, index) => {
-                    const isLast = index === TABLE_ROWS.length - 1;
+              
+              {data?.results?.filter((item:any) =>{
+                if (internal === "all") return true;
+                if (internal === "internal") return item.is_internal_employee;
+                return !item.is_internal_employee;
+              }
+            ).map(
+                  ({ profile_image, staff_id,first_name,last_name, email,date_joined }:{profile_image:string,staff_id:string,first_name:string,last_name:string,email:string,date_joined:string,created_at:string}, index:number) => {
+                    const isLast = index === data?.results.length - 1;
                     const classes = isLast
                         ? "p-4"
                         : "p-4 border-b border-blue-gray-50";
 
                     return (
-                        <tr key={name}>
+                        <tr key={index}>
                           <td className={classes}>
                             <div className="flex items-center gap-3">
-                              <Avatar src={img} alt={name} size="sm" />
-                              <div className="flex flex-col">
+                              <Avatar src={'http://localhost:8000/'+profile_image} alt={first_name} size="sm" />
+                              <Link href={'/staff/profile/'+staff_id} className="flex flex-col">
                                 <Typography
                                     variant="small"
                                     color="blue-gray"
                                     className="font-helvetica"
                                 >
-                                  {name}
+                                  {first_name+" "+last_name}
                                 </Typography>
                                 <Typography
                                     variant="small"
@@ -173,7 +163,7 @@ import { useState } from "react";
                                 >
                                   {email}
                                 </Typography>
-                              </div>
+                              </Link>
                             </div>
                           </td>
                           <td className={classes}>
@@ -183,14 +173,14 @@ import { useState } from "react";
                                   color="blue-gray"
                                   className="font-helvetica"
                               >
-                                {job}
+                                {"Job"}
                               </Typography>
                               <Typography
                                   variant="small"
                                   color="blue-gray"
                                   className="font-helvetica opacity-70"
                               >
-                                {org}
+                                {"Organisation"}
                               </Typography>
                             </div>
                           </td>
@@ -200,8 +190,8 @@ import { useState } from "react";
                                   variant="ghost"
                                   size="sm"
                                   className={'font-helvetica'}
-                                  value={online ? "online" : "offline"}
-                                  color={online ? "green" : "blue-gray"}
+                                  value={index % 2 == 0 ? "online" : "offline"}
+                                  color={index % 2 == 0 ? "green" : "blue-gray"}
                               />
                             </div>
                           </td>
@@ -211,7 +201,7 @@ import { useState } from "react";
                                 color="blue-gray"
                                 className="font-helvetica"
                             >
-                              {date}
+                              {date_joined}
                             </Typography>
                           </td>
                           <td className={classes}>
@@ -231,13 +221,13 @@ import { useState } from "react";
           </CardBody>
           <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
             <Typography className={'font-helvetica'} variant="small" color="blue-gray" >
-              Page 1 of 10
+              Page {pageNo} of {Math.ceil(data?.count/10)}
             </Typography>
             <div className="flex gap-2">
-              <Button className={'font-helvetica'} variant="outlined" size="sm">
+              <Button disabled={pageNo === 1 } onClick={()=>setPageNo(pageNo-1)} className={'font-helvetica'} variant="outlined" size="sm">
                 Previous
               </Button>
-              <Button className={'font-helvetica'} variant="outlined" size="sm">
+              <Button disabled={Math.ceil(data?.count/10) === pageNo } onClick={()=>setPageNo(pageNo+1)} className={'font-helvetica'} variant="outlined" size="sm">
                 Next
               </Button>
             </div>

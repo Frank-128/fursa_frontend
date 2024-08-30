@@ -9,7 +9,7 @@ export default function Sidebar(){
     const pathname = usePathname()
     const user = globalStore(state=>state.user)
 
-    console.log(user?.permissions)
+    
 
     return(
         <section className={'w-[8vw] hidden  md:flex fixed h-[100vh]  flex-col items-center shadow-xl shadow-blue-800/20 '}>

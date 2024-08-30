@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import api from '@/axiosInstance';
 
 const token = Cookies.get('token');
 const theToken = token ? token : undefined;
@@ -38,7 +39,7 @@ export const globalStore = create<Auth>((set) => ({
   setUser: async () => {
     if (theToken) {
       try {
-        const response = await axios.get('http://localhost:8000/user/detail', {
+        const response = await api.get('user/detail', {
           headers: {
             Authorization: `Bearer ${theToken}`,
           },

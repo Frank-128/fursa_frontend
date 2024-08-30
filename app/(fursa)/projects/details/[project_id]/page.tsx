@@ -15,10 +15,33 @@ import {FaCopy, FaDownload, FaEdit} from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import {useMemo, useState} from "react";
 import Link from "next/link";
+import api from '@/axiosInstance';
+import { useQuery } from '@tanstack/react-query';
+import { globalStore } from '@/context/store';
+import Spinner from '@/components/spinner/Spinner';
 
 export default function Details({params}: { params: { project_id: string } }) {
 
     const project = projects.filter((item) => item.id === Number(params.project_id))[0]
+    const token = globalStore(state=>state.token)
+
+    const getProject = async()=>{
+
+        const res = await api.get('project/'+params.project_id,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
+
+        return res.data
+    }
+
+
+    const {data,error,isLoading} = useQuery({
+        queryFn:getProject,
+        queryKey:['getProject']
+    });
+
     const [showProfile, setShowProfile] = useState(false)
     const [showPlot,setShowPlot] = useState(false)
     const [selectedPlots,setSelectedPlots] = useState<{index:number,plotNo:number}[]>([]);
@@ -41,7 +64,9 @@ export default function Details({params}: { params: { project_id: string } }) {
 
 
     return (
-        <div className={'flex flex-col gap-y-4 pb-5 relative'}>
+       <>
+        {
+         isLoading ? <Spinner /> : <div className={'flex flex-col gap-y-4 pb-5 relative'}>
             {
                 showMergeContainer &&
                 <div className={' h-24 rounded-lg p-2 z-[99] bg-[#17225a] md:w-[55%] flex flex-col justify-between w-[90%] text-gray-300 shadow-lg shadow-light-blue-800/20 fixed '}>
@@ -69,9 +94,9 @@ export default function Details({params}: { params: { project_id: string } }) {
             }
 
             <div className={'flex gap-2'}>
-                <h1 className={'md:text-3xl text-xl font-bold text-gray-700'}>{project.name} Project </h1>
-                {!project.status ? <Chip value={'ongoing'} color={'orange'}/> :
-                    <Chip value={'sold out'} color={'green'}/>}
+                <h1 className={'md:text-3xl text-xl font-bold text-gray-700'}>{data?.name} Project </h1>
+                 <Chip value={data?.status} color={data?.status === "Pending" ?"deep-orange":data.status==="Available"?"light-blue":"green"}/> 
+                    
             </div>
             <div className={'flex md:flex-row flex-col justify-between w-full gap-4'}>
 
@@ -81,7 +106,7 @@ export default function Details({params}: { params: { project_id: string } }) {
 
                         <div className={'flex items-center gap-2'}>
                             <h1 className={'text-gray-400 text-sm'}>Name </h1>
-                            <h2 className={'text-gray-800 text-lg font-bold'}>{project.name}</h2>
+                            <h2 className={'text-gray-800 text-lg font-bold'}>{data?.name}</h2>
                         </div>
                         <div className={'flex items-center gap-2 '}>
                             <h1 className={'text-gray-400 text-sm'}>Ministry ID </h1>
@@ -89,7 +114,7 @@ export default function Details({params}: { params: { project_id: string } }) {
                         </div>
                         <div className={'flex items-center gap-2 '}>
                             <h1 className={'text-gray-400 text-sm'}>Size </h1>
-                            <h2>{project.size}</h2>
+                            <h2>{data?.size}</h2>
                         </div>
                         <div className={'flex items-center gap-2'}>
                             <h1 className={'text-gray-400 text-sm'}>Number of plots </h1>
@@ -112,23 +137,23 @@ export default function Details({params}: { params: { project_id: string } }) {
 
                         <div className={'flex items-center gap-2'}>
                             <h1 className={'text-gray-400 text-sm'}>Region </h1>
-                            <h2 className={'text-gray-800 text-lg font-bold'}>Arusha</h2>
+                            <h2 className={'text-gray-800 text-lg font-bold'}>{data?.address.region_name}</h2>
                         </div>
                         <div className={'flex items-center gap-2'}>
                             <h1 className={'text-gray-400 text-sm'}>District </h1>
-                            <h2>Arumeru</h2>
+                            <h2>{data?.address.region_name}</h2>
                         </div>
                         <div className={'flex items-center gap-2'}>
                             <h1 className={'text-gray-400 text-sm'}>Ward </h1>
-                            <h2>Munincipal</h2>
+                            <h2>{data?.address.ward_name}</h2>
                         </div>
                         <div className={'flex items-center gap-2'}>
                             <h1 className={'text-gray-400 text-sm'}>Division </h1>
-                            <h2 className={'text-gray-800 text-lg font-bold'}>Seriani</h2>
+                            <h2 className={'text-gray-800 text-lg font-bold'}>{data?.division}</h2>
                         </div>
                         <div className={'flex items-center gap-2'}>
                             <h1 className={'text-gray-400 text-sm'}>Street </h1>
-                            <h2>Uzunguni</h2>
+                            <h2>{data?.street}</h2>
                         </div>
                     </div>
                 </div>
@@ -143,19 +168,19 @@ export default function Details({params}: { params: { project_id: string } }) {
 
                         <div className={'flex items-center gap-2'}>
                             <h1 className={'text-gray-400 text-sm'}>Indicative Price </h1>
-                            <h2 className={'text-gray-800 text-lg font-bold'}>12,000/=</h2>
+                            <h2 className={'text-gray-800 text-lg font-bold'}>{data?.broker_price}</h2>
                         </div>
                         <div className={'flex items-center gap-2 '}>
                             <h1 className={'text-gray-400 text-sm'}>Selling Price </h1>
-                            <h2>45,000/=</h2>
+                            <h2>{data?.selling_price}</h2>
                         </div>
                         <div className={'flex items-center gap-2 '}>
-                            <h1 className={'text-gray-400 text-sm'}>Plot type </h1>
-                            <h2>residential</h2>
+                            <h1 className={'text-gray-400 text-sm'}>Project type </h1>
+                            <h2>{data?.project_type}</h2>
                         </div>
                         <div className={'flex items-center gap-2'}>
                             <h1 className={'text-gray-400 text-sm'}>Features </h1>
-                            <h2 className={'text-gray-800 text-lg font-bold'}>River, Crater</h2>
+                            <h2 className={'text-gray-800 text-lg font-bold'}>{data.first_neighbouring_feature},{data?.second_neighbouring_feature}, {data?.third_neighbouring_feature}</h2>
                         </div>
                         <div className={'flex items-start gap-2'}>
                             <h1 className={'text-gray-400 text-sm'}>Neighbours </h1>
@@ -216,12 +241,10 @@ export default function Details({params}: { params: { project_id: string } }) {
 
             <div
                 className={'grid md:grid-cols-4 grid-cols-2  w-full h-[50vh] overflow-y-scroll bg-gray-100  rounded gap-3 p-2'}>
-                {Array(project.number_of_plots).fill(null).map((_, index) => <div
+                {Array(data?.number_of_plots).fill(null).map((_, index) => <div
                     key={index}
 
-                    // onDoubleClick={()=>{
-                    //     alert('hi')
-                    // }}
+                    
                     className={index === 3 ? `md:w-36 hover:scale-95  relative text-gray-700 font-bold hover:shadow-xl hover:outline hover:outline-red-800/20 hover:shadow-red-800/20 cursor-pointer duration-300 transition ease-in-out md:h-28 w-20 h-16 flex items-center justify-center  shadow-md bg-green-500/20 shadow-blue-800/20 border-[0.8px] rounded`
                         :
                         ` ${selectedPlots.some( item=>item.index === index) && 'outline-yellow-800/20 shadow-yellow-800/20 shadow-xl scale-105 outline'} md:w-36  cursor-pointer duration-300 transition ease-in-out md:h-28 w-20 h-16 flex items-center justify-center rounded relative shadow-md bg-gray-500/20 shadow-blue-800/20 border-[0.8px]  text-gray-700`}>
@@ -243,7 +266,7 @@ export default function Details({params}: { params: { project_id: string } }) {
                             <List className={
                                 'p-0'
                             }>
-                                <ListItem onClick={()=> {
+                                <ListItem className='font-helvetica text-center' onClick={()=> {
                                     handleSelected(index,index+1);
                                     setIsPopoverOpen(false)
                                 }}>
@@ -252,8 +275,8 @@ export default function Details({params}: { params: { project_id: string } }) {
                                     "deselect" :"select"
                                     }
                                         </ListItem>
-                                <ListItem onClick={() =>  setShowPlot(true) }>view</ListItem>
-                                <ListItem>create sale</ListItem>
+                                <ListItem className='font-helvetica text-center' onClick={() =>  setShowPlot(true) }>view</ListItem>
+                                <ListItem className='font-helvetica text-center'>create sale</ListItem>
                             </List>
                         </PopoverContent>
                     </Popover>
@@ -274,7 +297,7 @@ export default function Details({params}: { params: { project_id: string } }) {
                 </div>
                 <div className={'relative'}>
                     <h1>Map of the project</h1>
-                    <Image alt={"ramani"} src={'/ramani.jpg'} width={200} height={200}
+                    <Image alt={"ramani"} src={'http://localhost:8000/'+data?.project_map} width={200} height={200}
                            className={'object-cover w-[90vw] md:w-[40vw] h-[40vh]'}/>
                     <span className={'absolute top-8 cursor-pointer left-5 bg-[#abcabc] rounded-md p-2'}>
                         <FaEdit color={'white'}/>
@@ -410,6 +433,7 @@ export default function Details({params}: { params: { project_id: string } }) {
                 {/*    end */}
             </Dialog>
 
-        </div>
+        </div>}
+        </>
     )
 }

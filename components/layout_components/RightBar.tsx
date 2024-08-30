@@ -45,7 +45,7 @@ export default function RightBar(){
 
     
 
-    console.log(user)
+    
     return(
         <section className={'w-[25%] hidden md:block fixed h-[100vh] right-0 shadow-xl shadow-blue-800/20'}>
         <div className={'p-4 items-center flex gap-4 shadow-xl shadow-blue-800/20'}>

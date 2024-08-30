@@ -1,3 +1,5 @@
+import Spinner from "@/components/spinner/Spinner";
+
 export default function Loading(){
     return (
         <main className={'main-loading'}>
@@ -6,7 +8,7 @@ export default function Loading(){
 
             </div>
 
-            <span className={'loader'}></span>
+            <Spinner />
         </main>
     )
 }

@@ -7,10 +7,37 @@ import { GiNotebook } from "react-icons/gi";
 import { TiTick } from "react-icons/ti";
 import { FaUsersViewfinder } from "react-icons/fa6";
 import { BsCashCoin } from "react-icons/bs";
+import { globalStore } from "@/context/store";
+import { useQuery } from "@tanstack/react-query";
+import api from "@/axiosInstance";
 
 
 
-export default function Staff() {
+export default function Staff({params}:{params:{profile:string}}) {
+    const token = globalStore(state=>state.token)
+
+    const getStaff = async ()=>{ 
+        
+      
+        
+      const {data} = await api.get('user/staff/'+params.profile,{
+      headers:{
+          Authorization:`Bearer ${token}`
+      }
+
+     
+  })
+  return data
+
+}
+
+const { data, error, isLoading } = useQuery({
+  queryKey: ['getStaff'], 
+  queryFn: getStaff,        
+  refetchOnWindowFocus: true,
+});
+
+    
     return (
         <main className="flex  flex-col items-center gap-y-5 justify-between pb-12">
 
@@ -18,19 +45,23 @@ export default function Staff() {
                 className={'flex sm:flex-row flex-col w-full border-[0.8px]  border-gray-500 shadow-xl shadow-blue-800/20 h-fit '}>
                 <div
                     className={'p-6 gap-3 sm:border-r-[0.9px] basis-3/12 sm:border-b-0  border-b-[0.9px] border-gray-500 flex flex-col items-center justify-center'}>
-                    <Avatar src={'/amandla.jpg'} alt={'profile picture'}
+                    <Avatar src={'http://localhost:8000/'+data?.profile_image} alt={'profile picture'}
                             className={'outline-4 outline outline-offset-1 outline-red-300'} size="xxl"/>
 
                     <div className={'flex flex-col items-center'}>
                    <span className={'text-xl text-gray-800'}>
-                    Violet Green
+                    {data?.first_name+" "+data?.last_name}
                 </span>
                         <span className={'text-sm text-gray-600'}>
-                    C.E.O
+                    {
+                        data?.groups?.map((item:string,index:number)=>
+                     <i key={index}> {item}</i>
+                    )
+                    }
                 </span>
                     </div>
                     <div>
-                        <span className={'text-xs'}>Member since 12-03-2022</span>
+                        <span className={'text-xs'}>Member since {data?.date_joined}</span>
                     </div>
                     <Chip value={'Internal employee'} color={'green'}/>
                     <div className={'gap-2 flex justify-around'}>
@@ -45,11 +76,11 @@ export default function Staff() {
                         <div className={'grid grid-cols-1 sm:grid-cols-3 gap-y-4'}>
                             <div className={'flex flex-col'}>
                                 <span className={'text-xs font-bold text-gray-800'}>Email</span>
-                                <span className={'text-sm text-gray-500'}>violetgreen@gmail.com</span>
+                                <span className={'text-sm text-gray-500'}>{data?.email}</span>
                             </div>
                             <div className={'flex flex-col'}>
                                 <span className={'text-xs text-gray-800'}>Phone number</span>
-                                <span className={'text-sm text-gray-500'}>+255658004980</span>
+                                <span className={'text-sm text-gray-500'}>{data?.phonenumber}</span>
                             </div>
                             <div className={'flex flex-col'}>
                                 <span className={'text-xs text-gray-800'}>Address</span>
@@ -57,7 +88,7 @@ export default function Staff() {
                             </div>
                             <div className={'flex flex-col'}>
                                 <span className={'text-xs text-gray-800'}>TIN</span>
-                                <span className={'text-sm text-gray-500'}>112233</span>
+                                <span className={'text-sm text-gray-500'}>{data?.TIN}</span>
                             </div>
                             <div className={'flex flex-col'}>
                                 <span className={'text-xs text-gray-800'}>Bank</span>
