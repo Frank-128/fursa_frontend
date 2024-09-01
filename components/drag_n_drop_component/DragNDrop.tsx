@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Image from 'next/image';
+import { FaFilePdf } from 'react-icons/fa';
+import { Progress } from '@material-tailwind/react';
 
 interface ExtendedFile extends File {
     preview: string;
@@ -81,15 +83,29 @@ const FileUpload = ({ title, files, setFiles, fileType='image' }:FileUploadProps
                                     {
 
                                         fileType === 'pdf' ? (
-                                            <p>{file?.name}</p>
+                                            <div className='outline bg-blue-300/20 rounded-sm p-4 outline-[#17255a] outline-[0.8px]'>
+                                                <div className='text-bold text-center  text-orange-800'>{title}</div>
+                                                <div className='flex p-4'>
+                                                <FaFilePdf className='text-red-400' />
+                                                <i className='text-xs'>{file?.name}</i>
+                                                </div>
+                                                <div className='flex gap-2 items-center'>
+                                                <Progress color='green' value={100} />
+                                                <span className='text-xs'>100%</span>
+                                                </div>
+                                            </div>
                                         ) : (
+                                            <div className=''>
+
                                             <Image
                                                 width={100}
                                                 height={100}
+                                                className='outline rounded outline-4 outline-gray-200 '
                                                 src={file?.preview}
                                                 alt={file?.name}
                                                 style={{ width: '500px', height: '200px', objectFit: 'cover' }}
-                                            />
+                                                />
+                                                </div>
                                         )
                                     }
                                     <button

@@ -6,9 +6,14 @@ import api from '@/axiosInstance';
 const token = Cookies.get('token');
 const theToken = token ? token : undefined;
 
-interface Auth {
+interface StoreProps {
   token: string | undefined;
+  openNavbar:boolean;
+  handleNavbar:()=>void;
+  openSmallScreenNavbar:boolean;
+  handleSmallScreenNavbar:()=>void;
   user: { 
+    id:number;
     first_name: string;
     middle_name: string;
     last_name:string;
@@ -33,7 +38,11 @@ interface Auth {
   logout:()=>void;
 }
 
-export const globalStore = create<Auth>((set) => ({
+export const globalStore = create<StoreProps>((set) => ({
+  openNavbar:false,
+  handleNavbar:()=>set(state=>({openNavbar:!state.openNavbar})),
+  openSmallScreenNavbar:false,
+  handleSmallScreenNavbar:()=>set(state=>({openSmallScreenNavbar:!state.openSmallScreenNavbar})),
   token: theToken, 
   user: null,
   setUser: async () => {

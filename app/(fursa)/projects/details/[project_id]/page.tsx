@@ -118,7 +118,7 @@ export default function Details({params}: { params: { project_id: string } }) {
                         </div>
                         <div className={'flex items-center gap-2'}>
                             <h1 className={'text-gray-400 text-sm'}>Number of plots </h1>
-                            <h2>{project.number_of_plots}</h2>
+                            <h2>{project?.number_of_plots}</h2>
                         </div>
                         <div className={'flex items-center gap-2'}>
                             <h1 className={'text-gray-400 text-sm'}>Prev owner </h1>
@@ -180,7 +180,7 @@ export default function Details({params}: { params: { project_id: string } }) {
                         </div>
                         <div className={'flex items-center gap-2'}>
                             <h1 className={'text-gray-400 text-sm'}>Features </h1>
-                            <h2 className={'text-gray-800 text-lg font-bold'}>{data.first_neighbouring_feature},{data?.second_neighbouring_feature}, {data?.third_neighbouring_feature}</h2>
+                            <h2 className={'text-gray-800 text-lg font-bold'}>{data?.first_neighbouring_feature},{data?.second_neighbouring_feature}, {data?.third_neighbouring_feature}</h2>
                         </div>
                         <div className={'flex items-start gap-2'}>
                             <h1 className={'text-gray-400 text-sm'}>Neighbours </h1>

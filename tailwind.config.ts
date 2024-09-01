@@ -15,7 +15,8 @@ module.exports = withMT({
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       fontFamily:{
-        helvetica:['helvetica','sans-serif']
+        helvetica:["helvetica","sans-serif"],
+        helveticaBold:["helvetica-bold","sans-serif"],
       }
     },
   },

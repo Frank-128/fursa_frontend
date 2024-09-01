@@ -6,8 +6,8 @@ import ReactQueryProvider from "@/components/queryclient/QueryClient";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Sign in",
-  description: "Sign-in to FEBO",
+  title: "FCS",
+  description: "Fursa Credit Services",
 };
 
 export default function RootLayout({

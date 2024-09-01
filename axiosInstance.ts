@@ -63,7 +63,7 @@ api.interceptors.response.use(
       } catch (refreshError) {
         console.error('Refresh token error:', refreshError);
         auth.signOut(); 
-        window.location.href = '/signin'; 
+        // window.location.href = '/signin'; 
         return Promise.reject(refreshError);
       }
     }

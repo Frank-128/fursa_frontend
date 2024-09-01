@@ -6,6 +6,14 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'helvetica-bold';
+    src: url('../public/helvetica/HelveticaNowText-Bold.woff2') format('woff2'),
+    url('../public/helvetica/HelveticaNowText-Bold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -41,6 +49,66 @@
 
 }
 
+@keyframes colorTransition {
+    0% {
+      color: #ff8427; /* Starting color */
+    }
+    50% {
+      color: #17255a; /* Middle color */
+    }
+    100% {
+      color: #ff8427; /* Ending color (same as starting color to loop) */
+    }
+  }
+  
+  .febo-color-transition {
+    animation: colorTransition 5s infinite; /* Adjust the duration as needed */
+  }
+  
+
+.onboard_bg {
+    background-image: url('/bg1.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
+    width: 100vw;
+ 
+}
+
+.onboard_bg::before {
+    content: "";
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(5, 5, 5, 0.144);
+    backdrop-filter: blur(10px); 
+    
+  }
+
+
+  .signinBackground {
+    flex-basis: 33.3333%;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 1), transparent), url('/1.jpg');
+  }
+  
+  @media (min-width: 640px) {
+    .signinBackground {
+      flex-basis: 50%;
+    }
+  }
+  
 
 
 

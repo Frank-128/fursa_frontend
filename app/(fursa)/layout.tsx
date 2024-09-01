@@ -25,7 +25,7 @@ export default function RootLayout({
       <ReactQueryProvider>
           <Sidebar />
           <Main>{children}</Main>
-          <RightBar />
+          {/* <RightBar /> */}
       </ReactQueryProvider>
         </body>
     </html>

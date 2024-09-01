@@ -10,14 +10,18 @@ export const sidebar_links = [
     {
         name:'Dashboard',
         icon:MdDashboard,
-        link:'/',
-        permission:"all"
+        link:'/dashboard',
+        permission:"all",
+        sublinks:[]
     },
     {
         name:'Projects',
         icon:RiLandscapeLine,
         link:'/projects',
-        permission:"all"
+        permission:"all",
+        sublinks:[
+            
+        ]
     },
     ,
     {
@@ -54,6 +58,6 @@ export const sidebar_links = [
         name:'Reports',
         icon:TbReport,
         link:'/reports',
-        permission:"reports.view_reports"
+        permission:"all"
     },
 ]
