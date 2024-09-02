@@ -170,7 +170,7 @@ export default function Main({ children }: { children: React.ReactNode }) {
                         <PopoverContent className={""}>
                             <div
                                 className={
-                                    "p-2 border-b-[0.8px] flex items-center gap-2  border-gray-600 text-xs"
+                                    "p-2 border-b-[0.8px] cursor-pointer flex items-center gap-2  border-gray-600 text-xs"
                                 }
                             >
                                 <IoCalendarOutline />
@@ -178,7 +178,7 @@ export default function Main({ children }: { children: React.ReactNode }) {
                             </div>
                             <div
                                 className={
-                                    "p-2 border-b-[0.8px] flex items-center gap-2 border-gray-600 text-xs"
+                                    "p-2 border-b-[0.8px] cursor-pointer flex items-center gap-2 border-gray-600 text-xs"
                                 }
                             >
                                 <BiUser />
@@ -186,7 +186,7 @@ export default function Main({ children }: { children: React.ReactNode }) {
                             </div>
                             <div
                                 className={
-                                    "p-2 border-b-[0.8px] flex items-center gap-2 border-gray-600 text-xs"
+                                    "p-2 border-b-[0.8px] cursor-pointer flex items-center gap-2 border-gray-600 text-xs"
                                 }
                                 onClick={() => {
                                     router.push("/signin");

@@ -20,8 +20,9 @@ const refreshToken = async () => {
     const user = auth.currentUser;
     if (user) {
       const token = await user.getIdToken(true); 
-      console.log('the token is ==> '+JSON.parse(token).value)
-      Cookies.set('token', JSON.parse(token).value);
+      
+      Cookies.set('token', token);
+      
       return token;
     } else {
       throw new Error('No user is currently signed in.');
@@ -54,16 +55,15 @@ api.interceptors.response.use(
 
     if (error.response && error.response.status === 401) {
       try {
-        
         const newToken = await refreshToken();
-
-        
+        Cookies.set('token', newToken);  // Update the cookie with the new token
         originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
         return api(originalRequest);
       } catch (refreshError) {
         console.error('Refresh token error:', refreshError);
-        auth.signOut(); 
-        // window.location.href = '/signin'; 
+        auth.signOut();
+        Cookies.remove('token');
+        window.location.href = '/signin';
         return Promise.reject(refreshError);
       }
     }
