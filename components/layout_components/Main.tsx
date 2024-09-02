@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { sidebar_links } from "@/constants/links";
-import { Drawer, Input } from "@material-tailwind/react";
+import { Accordion, AccordionBody, AccordionHeader, Drawer, Input } from "@material-tailwind/react";
 import {
     Popover,
     PopoverHandler,
@@ -32,6 +32,7 @@ export default function Main({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const user = globalStore((state) => state.user);
     const logout = globalStore((state) => state.logout);
+    const [openLinks,setOpenLinks] = useState<string[]>([])
 
 
     const [currentTime, setCurrentTime] = useState(moment());
@@ -44,6 +45,22 @@ export default function Main({ children }: { children: React.ReactNode }) {
         return () => clearInterval(intervalId);
     }, []);
 
+    function Icon({ open }:{open:boolean}) {
+        return (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            className={`${ open ? "rotate-180 text-[#ff8427]" : "text-[#abcadd]"} h-5 w-5 transition-transform`}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
+        );
+      }
+
+
     return (
         <main
             className={`  ${
@@ -53,7 +70,7 @@ export default function Main({ children }: { children: React.ReactNode }) {
             <div
                 className={`${openNavbar ?'md:w-[80vw]  md:left-[20vw]' : 'md:w-[92vw]  md:left-[8vw]'} transition-all duration-300 ease-in-out  absolute h-screen   w-screen mt-24 `}
             >
-                <div className="p-4">
+                <div className="p-4 min-h-screen">
 
                 {children}
                 </div>
@@ -152,7 +169,7 @@ export default function Main({ children }: { children: React.ReactNode }) {
                 </div>
             </div>
             <Drawer
-                className={"relative flex items-center bg-[#17255a] flex-col py-2"}
+                className={"relative flex items-center h-[100vh] bg-[#17255a] flex-col py-2"}
                 placement={"left"}
                 open={openSmallScreenNavbar}
                 onClose={handleSmallScreenNavbar}
@@ -160,15 +177,19 @@ export default function Main({ children }: { children: React.ReactNode }) {
                  <Image src='/logo1.jpg' className={` rounded-full shadow-sm shadow-[#ff8427] w-[78px] h-[78px] overflow-y-scroll`} width={100} height={100} alt='FCS' />
             <div className={'text-[#ff8427] border-b-[0.8px] border-gray-500 w-full font-helveticaBold text-2xl py-4 text-center'}>FCS</div>
 
-                <List className={"flex flex-col items-center"}>
-                    {sidebar_links.map((item, index) => (
-                        <ListItem
+                
+                <List className={"flex flex-col h-[65vh] w-full overflow-y-auto  items-center "}>
+                    {sidebar_links.map((item, index) => {
+                      
+                        if(item?.sublinks?.length === 0) {
+
+                     return (<ListItem
                             key={index}
                             onClick={() => {
-                                item && router.push(item?.link);
+                                item && item.sublinks?.length === 0 && router.push(item?.link as string);
                                 handleSmallScreenNavbar()
                             }}
-                            className={`flex w-32 items-center font-helvetica ${
+                            className={`flex w-full items-center    text-xs font-helvetica ${
                                 pathname === item?.link ||
                                 (item?.link !== "/" &&
                                     pathname.startsWith(item?.link as string))
@@ -179,13 +200,58 @@ export default function Main({ children }: { children: React.ReactNode }) {
                             <ListItemPrefix>
                                 {item && <item.icon />}
                             </ListItemPrefix>
-                            <span>{item?.name}</span>
-                        </ListItem>
-                    ))}
+                            <span>{item?.name}</span> 
+                        </ListItem>)}
+                        else{
+                           return (<Accordion open={openLinks.includes(item?.name as string)} icon={<Icon  open={openLinks.includes(item?.name as string)} />}>
+                     <AccordionHeader  onClick={() => setOpenLinks((prev)=>{
+            if(prev.includes(item?.name as string)){
+                return prev.filter(itm=>itm !== item?.name)
+            }
+            return [...prev,item?.name as string]})} 
+            className="border-none"
+            >
+                     
+                     
+                     
+                            
+                     <span className={`text-[#abcadd] gap-2 px-2 flex items-center font-helvetica text-xs ${
+                                pathname.startsWith(item?.link as string) 
+                                    ? " text-[#ff8427]  rounded-r-xl hover:opacity-80"
+                                    : "text-[#abcadd] hover:scale-105"
+                            }`}>
+                                {item && <item.icon />}
+
+                     {item?.name}           
+                     </span>
+        </AccordionHeader>
+        <AccordionBody className={'p-0  space-y-2 w-full'}>
+          {item?.sublinks?.map((subItm,subItmKey)=><div
+                            key={subItmKey}
+                            onClick={() => {
+                                 router.push(subItm?.link as string);
+                                handleSmallScreenNavbar()
+                            }}
+                            className={`flex w-full items-center font-helvetica gap-4 px-8  ${
+                                pathname === subItm?.link || pathname.startsWith(subItm?.link as string)
+                                    ? " text-[#ff8427]  rounded-r-xl hover:opacity-80"
+                                    : "text-[#abcadd] hover:scale-105"
+                            }`}
+                        >
+                            <div>
+                                {subItm && <item.icon />}
+                            </div>
+                            <span>{subItm?.name}</span> 
+                        </div>)}
+        </AccordionBody>
+      </Accordion>)
+                      }}) }
+                      
                 </List>
+                
                 <div
                     className={
-                        "absolute flex flex-col items-center bottom-0 left-0 w-full border-t-[0.9px] border-gray-500"
+                        "absolute flex flex-col items-center  bottom-0 left-0 w-full border-t-[0.9px] border-gray-500"
                     }
                 >
                     <div className={"flex gap-2 items-center p-2 text-[#abcadd]"}>

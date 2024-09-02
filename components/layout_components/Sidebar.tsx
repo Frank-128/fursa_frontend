@@ -23,7 +23,7 @@ export default function Sidebar(){
             {
 
                 sidebar_links.filter((item)=>user?.permissions.includes(item?.permission as string) || item?.permission === "all").map((item,index)=>(
-                    <Link href={item?.link as string} className={` ${pathname.startsWith(item?.link as string) ? ' text-[#ff8427]  w-[9.5vw]  rounded-r-xl hover:opacity-80' : 'text-[#abcadd] hover:scale-105'}  w-full py-4 transition duration-300 ease-in-out cursor-pointer   flex px-4 gap-x-4 items-center`} key={index}>
+                    <Link href={item?.link as string || "/dashboard"} className={` ${pathname.startsWith(item?.link as string) ? ' text-[#ff8427]  w-[9.5vw]  rounded-r-xl hover:opacity-80' : 'text-[#abcadd] hover:scale-105'}  w-full py-4 transition duration-300 ease-in-out cursor-pointer   flex px-4 gap-x-4 items-center`} key={index}>
                         <h1>
                             {item && <item.icon  className={` transition-all ${openNavbar ? 'text-lg' : 'text-2xl'} duration-300 ease-in-out`} />}
                         </h1>

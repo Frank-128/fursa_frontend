@@ -86,7 +86,7 @@ const { data, error, isLoading } = useQuery({
                 </Typography>
               </div>
               <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                <Link href='/staff/create' className="flex font-helvetica items-center gap-3 bg-[#17255a] text-gray-200 p-2 rounded" >
+                <Link href='/human_resource/staff/create' className="flex font-helvetica items-center gap-3 bg-[#17255a] text-gray-200 p-2 rounded" >
                   <IoMdPersonAdd strokeWidth={2} className="h-4 w-4" /> Add member
                 </Link>
               </div>

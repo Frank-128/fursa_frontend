@@ -1,11 +1,14 @@
-import { MdDashboard } from "react-icons/md";
+import { MdDashboard, MdList } from "react-icons/md";
 import { RiLandscapeLine } from "react-icons/ri";
 import { BsCashCoin } from "react-icons/bs";
-import { FaUsers } from "react-icons/fa";
+import { FaList, FaUsers } from "react-icons/fa";
 import { TbReport } from "react-icons/tb";
 import { CiTrophy } from "react-icons/ci";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { ImUsers } from "react-icons/im";
+import { BiBriefcase } from "react-icons/bi";
+import { PiUserListDuotone } from "react-icons/pi";
+import { LiaPollSolid } from "react-icons/lia";
 export const sidebar_links = [
     {
         name:'Dashboard',
@@ -16,11 +19,22 @@ export const sidebar_links = [
     },
     {
         name:'Projects',
-        icon:RiLandscapeLine,
+        icon:BiBriefcase,
         link:'/projects',
         permission:"all",
         sublinks:[
-            
+            {
+                name:'Projects List',
+        icon:FaList,
+        link:'/projects',
+        permission:"all",
+            },
+            {
+                name:'Plots List',
+        icon:MdList,
+        link:'/projects/plots',
+        permission:"all",
+            }
         ]
     },
     ,
@@ -28,36 +42,67 @@ export const sidebar_links = [
         name:'Sales',
         icon:BsGraphUpArrow,
         link:'/sales',
-        permission:"all"
+        permission:"all",
+        sublinks:[
+            {
+                name:'Leads management',
+                icon:PiUserListDuotone,
+                link:'/sales/leads',
+                permission:"all",},
+                {
+                    name:'Sales Orders',
+                     icon:LiaPollSolid,
+                    link:'/sales/orders',
+                     permission:"all",
+                },
+                {
+                    name:'Sales List',
+                    icon:FaList,
+                 link:'/sales',
+                 permission:"all",
+                }
+        ]
     },
     {
         name:'Payments',
         icon:BsCashCoin,
         link:'/payments',
-        permission:"payments.view_payments"
+        permission:"payments.view_payments",
+        sublinks:[]
     },
     {
-        name:'Staff',
+        name:'Human Resource',
         icon:ImUsers,
-        link:'/staff',
-        permission:"custom_user.view_customuser"
+        link:'/human_resource',
+        permission:"custom_user.view_customuser",
+        sublinks:[
+            {
+                name:'Staff List',
+        icon:ImUsers,
+        link:'/human_resource/staff',
+        permission:"all",
+            }
+        ]
     },
     {
-        name:'Clients',
+        name:'Title deeds',
         icon:FaUsers,
-        link:'/clients',
-        permission:"all"
+        link:'/title_deeds',
+        permission:"all",
+        sublinks:[]
     },
     {
         name:'Promotions',
         icon:CiTrophy,
         link:'/promotions',
-        permission:"all"
+        permission:"all",
+        sublinks:[]
     },
     {
         name:'Reports',
         icon:TbReport,
         link:'/reports',
-        permission:"all"
+        permission:"all",
+        sublinks:[]
     },
 ]
