@@ -50,7 +50,7 @@ export const sidebar_links = [
                 link:'/sales/leads',
                 permission:"all",},
                 {
-                    name:'Sales Orders',
+                    name:'Sales Orderss',
                      icon:LiaPollSolid,
                     link:'/sales/orders',
                      permission:"all",
