@@ -148,7 +148,7 @@ const { data, error, isLoading } = useQuery({
                           <td className={classes}>
                             <div className="flex items-center gap-3">
                               <Avatar src={'http://localhost:8000/'+profile_image} alt={first_name} size="sm" />
-                              <Link href={'/staff/profile/'+staff_id} className="flex flex-col">
+                              <Link href={'/human_resource/staff/profile/'+staff_id} className="flex flex-col">
                                 <Typography
                                     variant="small"
                                     color="blue-gray"

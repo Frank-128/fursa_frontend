@@ -5,7 +5,7 @@ import React from 'react'
 function Onboard() {
   return (
     <div className='onboard_bg -z-10 flex items-center justify-center '>
-        <div className="bg-white/50 backdrop-blur-[30px] gap-y-6 px-10 rounded-[10px] w-[90%] sm:w-2/6 py-2 flex flex-col items-center h-[90%] z-20 relative ">
+        <div className="bg-white/50 backdrop-blur-[30px] gap-y-6 px-10 rounded-[10px] w-[90%] sm:w-2/6 py-2 flex flex-col items-center h-fit z-20 relative ">
         
             <div className=' text-[#17255A] sm:text-6xl text-4xl font-helveticaBold '>FCS</div>
             <Image src={'/logo1.jpg'}  width={120} height={120} alt='logo' className='shadow-xl sm:w-[120px] sm:h-[120px] w-[80px] h-[80px] shadow-gray-800/20 drop-shadow-2xl rounded-full' />

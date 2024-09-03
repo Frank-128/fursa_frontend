@@ -48,12 +48,14 @@ export default function CreateStaff() {
     );
     const token = globalStore((state) => state.token);
     const stepperRef = useRef<any>(null);
+    
 
     const {
         register,
         handleSubmit,
         control,
         setValue,
+        trigger,
         clearErrors,
         formState: { errors },
     } = useForm();
@@ -74,6 +76,7 @@ export default function CreateStaff() {
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data",
                 },
             }
         );
@@ -85,7 +88,7 @@ export default function CreateStaff() {
         mutationFn: postData,
         onSuccess: (data) => {
             alert("user created");
-            route.push("/staff");
+            route.push("/human_resource/staff");
         },
         onError: (error) => {
             console.error("Error:", error);
@@ -108,6 +111,7 @@ export default function CreateStaff() {
     });
 
     const submitData: SubmitHandler<FieldValues> = (data) => {
+        alert("this happens")
         const formData = new FormData();
 
         Object.entries(data).forEach(([key, value]: [string, string]) => {
@@ -199,6 +203,56 @@ export default function CreateStaff() {
         }
     }, [districtData]);
 
+
+
+    const sectionDetails = [
+        {
+            step: 1,
+            fields: [
+                "first_name",
+                "middle_name",
+                "last_name",
+                "date_of_birth",
+                "date_joined",
+                "gender",
+                "nida",
+            ],
+        },
+        {
+            step: 2,
+            fields: ["phonenumber", "alt_phonenumber", "email","refferal_name","refferal_contacts"],
+        },
+        {
+            step:3,
+            fields:['bank_name','bank_branch','bank_card_number']
+        }
+    ];
+
+    const handleNext = async (activeStep:number) => {
+        if (activeStep === 1) {
+            const isStepOneValid = await trigger(sectionDetails[0].fields);
+            if (isStepOneValid) {
+                stepperRef?.current?.nextCallback()
+            }
+        } else if (activeStep === 2 ) {
+            
+            const isStepTwoValid = await trigger(sectionDetails[1].fields);
+            if (isStepTwoValid) {
+                stepperRef?.current?.nextCallback()
+            }
+        } else if (activeStep === 3 ) {
+            
+            const isStepThreelid = await trigger(sectionDetails[2].fields);
+            if (isStepThreelid) {
+                stepperRef?.current?.nextCallback()
+            }
+        }
+
+    };
+
+
+
+
     return (
         <form
             onSubmit={handleSubmit(submitData)}
@@ -209,16 +263,14 @@ export default function CreateStaff() {
             >
                 Add new staff
             </div>
-            <Stepper ref={stepperRef} linear>
+            <Stepper ref={stepperRef} linear={false}>
                 <StepperPanel header="basic details">
                     <div className="flex my-4 justify-end">
-                        <Button
-                            className="bg-[#17255a] text-[#ff8427] p-2 gap-1 text-xs cursor-pointer"
-                            label="Next"
-                            icon={<FaArrowRight />}
-                            iconPos="right"
-                            onClick={() => stepperRef?.current?.nextCallback()}
-                        />
+                        
+                        <div onClick={() => handleNext(1)} className="bg-[#17255a] rounded-sm flex items-center text-[#ff8427] px-4 py-2 gap-1 text-xs cursor-pointer">
+                            <span>Next</span>
+                            <FaArrowRight />
+                        </div>
                     </div>
                     <div
                         className={
@@ -229,37 +281,159 @@ export default function CreateStaff() {
                             className={
                                 "w-full grid md:grid-cols-2 grid-cols-1 gap-4  justify-between"
                             }
-                        >
+                        >   
+                        <div className='w-full'>
+
                             <Input
-                                {...register("first_name")}
+                                {...register("first_name",{
+                                    required:"First Name is required",
+                                    onChange: () => clearErrors("first_name"),
+                                })}
                                 label={"First name"}
-                            />
+                                />
+                             {errors.first_name && (
+                                        <p className="text-xs text-red-500">
+                                            {errors.first_name &&
+                                            typeof errors?.first_name
+                                            .message === "string"
+                                            ? errors.first_name.message
+                                            : "Error occurred"}
+                                        </p>
+                                    )}
+                                    </div>
+                              <div className="w-full">
                             <Input
-                                {...register("middle_name")}
+                                {...register("middle_name",{
+                                    required:"Middle name is required",
+                                    onChange: () => clearErrors("middle_name"),
+                                })}
                                 label={"Middle name"}
-                            />
+                                />
+                                 {errors.middle_name && (
+                                        <p className="text-xs text-red-500">
+                                            {errors.middle_name &&
+                                            typeof errors?.middle_name
+                                                .message === "string"
+                                                ? errors.middle_name.message
+                                                : "Error occurred"}
+                                        </p>
+                                    )}
+                                </div>      
                         </div>
                         <div
                             className={
                                 "w-full grid md:grid-cols-2 grid-cols-1 gap-4  justify-between"
                             }
                         >
+                            <div className="w-full ">
+
                             <Input
-                                {...register("last_name")}
-                                label={"Surname"}
-                            />
+                                {...register("last_name",{
+                                    required:"Last name is required",
+                                    onChange: () => clearErrors("last_name"),
+                                })}
+                                label={"Last name"}
+                                />
+                                {errors.last_name && (
+                                        <p className="text-xs text-red-500">
+                                            {errors.last_name &&
+                                            typeof errors?.last_name
+                                                .message === "string"
+                                                ? errors.last_name.message
+                                                : "Error occurred"}
+                                        </p>
+                                    )}
+                                
+                                </div>
+                                <div className="w-full">
+
+                            
+
+
                             <Input
-                                {...register("date_of_birth")}
+                                {...register("date_of_birth",{
+                                    required:'Date of birth',
+                                    onChange: () => clearErrors("date_of_birth"),
+                                })}
                                 label={"Date of birth"}
                                 type={"date"}
                                 className={"w-full"}
+                                />
+                                {errors.date_of_birth && (
+                                        <p className="text-xs text-red-500">
+                                            {errors.date_of_birth &&
+                                            typeof errors?.date_of_birth
+                                                .message === "string"
+                                                ? errors.date_of_birth.message
+                                                : "Error occurred"}
+                                        </p>
+                                    )}
+                                </div>
+                                    <div className="w-full">
+                                    <Controller
+                                name="marital_status"
+                                control={control}
+                                defaultValue=""
+                                rules={{
+                                    required: "Marital Status is required",
+                                }}
+                                render={({ field }) => (
+                                    <div className="w-full">
+                                        <Select
+                                            onChange={(e) => {
+                                                setValue("marital_status", e);
+                                                clearErrors("marital_status");
+                                            }}
+                                            label={"Marital Status"}
+                                        >
+                                            {[
+                                                "single",
+                                                "married",
+                                                
+                                            ].map((item, index: number) => (
+                                                <Option
+                                                    className="font-helvetica"
+                                                    key={index}
+                                                    value={item}
+                                                >
+                                                    {item}
+                                                </Option>
+                                            ))}
+                                        </Select>
+                                        {errors.marital_status && (
+                                            <p className="text-xs text-red-500">
+                                                {errors.marital_status &&
+                                                typeof errors?.marital_status
+                                                    .message === "string"
+                                                    ? errors.marital_status.message
+                                                    : "Error occurred"}
+                                            </p>
+                                        )}
+                                    </div>
+                                )}
                             />
+                                    </div>
+
+                            <div className="w-full">
                             <Input
-                                {...register("date_joined")}
+                                {...register("date_joined",{
+                                    required:'Date Joined is required',
+                                    onChange: () => clearErrors("date_joined"),
+                                })}
                                 label={"Date Joined"}
                                 type={"date"}
                                 className={"w-full"}
-                            />
+                                />
+                                {errors.date_joined && (
+                                        <p className="text-xs text-red-500">
+                                            {errors.date_joined &&
+                                            typeof errors?.date_joined
+                                                .message === "string"
+                                                ? errors.date_joined.message
+                                                : "Error occurred"}
+                                        </p>
+                                    )}
+                                </div>    
                             <div
                                 className={
                                     "flex justify-start items-start flex-col"
@@ -321,15 +495,10 @@ export default function CreateStaff() {
                             />
                         </div>
                         <div className="flex justify-end">
-                            <Button
-                                className="bg-[#17255a] text-[#ff8427] p-2 gap-1 text-xs cursor-pointer"
-                                label="Next"
-                                icon={<FaArrowRight />}
-                                iconPos="right"
-                                onClick={() =>
-                                    stepperRef?.current?.nextCallback()
-                                }
-                            />
+                        <div onClick={() => handleNext(2)} className="bg-[#17255a] rounded-lg flex items-center text-[#ff8427] px-4 py-2 gap-1 text-xs cursor-pointer">
+                            <span>Next</span>
+                            <FaArrowRight />
+                        </div>
                         </div>
                     </div>
                     <div className={"flex justify-start  w-full"}>
@@ -341,22 +510,49 @@ export default function CreateStaff() {
                                 "w-full grid md:grid-cols-2 grid-cols-1 gap-4 p-2  border-[0.9px] border-gray-500 "
                             }
                         >
+                            <div className="w-full">
+
                             <Input
-                                {...register("phonenumber")}
+                                {...register("phonenumber",{required:"Phonenumber is required",onChange: () => clearErrors("phonenumber"),})}
                                 label={"Mobile Phone"}
                                 className={"w-full"}
-                            />
+                                />
+                            {errors.phonenumber && (
+                                <p className="text-xs text-red-500">
+                                            {errors.phonenumber &&
+                                            typeof errors?.phonenumber
+                                                .message === "string"
+                                                ? errors.phonenumber.message
+                                                : "Error occurred"}
+                                        </p>
+                                    )}
+                                    </div>
+                                
+                            <div className="w-full">
                             <Input
                                 {...register("alt_phonenumber")}
                                 label={"Second Mobile Phone"}
                                 className={"w-full"}
                             />
+                          
+                                </div> 
+                             <div className="w-full">
                             <Input
-                                {...register("email")}
+                                {...register("email",{required:"Email is required",onChange: () => clearErrors("email"),})}
                                 label={"Email address"}
                                 type={"email"}
                                 className={"w-full"}
-                            />
+                                />
+                                {errors.email && (
+                                        <p className="text-xs text-red-500">
+                                            {errors.email &&
+                                            typeof errors?.email
+                                                .message === "string"
+                                                ? errors.email.message
+                                                : "Error occurred"}
+                                        </p>
+                                    )}
+                                </div>          
                         </div>
 
                         <div className={"flex justify-start  w-full"}>
@@ -367,16 +563,39 @@ export default function CreateStaff() {
                                 "w-full grid md:grid-cols-2 grid-cols-1 gap-4 p-2  border-[0.9px] border-gray-500 "
                             }
                         >
+                            <div className="w-full">
+
                             <Input
-                                {...register("referral_name")}
+                                {...register("referral_name",{required:"Referral name is required",onChange: () => clearErrors("referral_name"),})}
                                 label={"Referral Name"}
                                 className={"w-full"}
-                            />
+                                />
+                                {errors.referral_name && (
+                                        <p className="text-xs text-red-500">
+                                            {errors.referral_name &&
+                                            typeof errors?.referral_name
+                                                .message === "string"
+                                                ? errors.referral_name.message
+                                                : "Error occurred"}
+                                        </p>
+                                    )}
+                                </div>
+                            <div className='w-full'>
                             <Input
-                                {...register("referral_contacts")}
+                                {...register("referral_contacts",{required:"Referral Contacts is required",onChange: () => clearErrors("referral_contacts"),})}
                                 label={"Referral Contacts"}
                                 className={"w-full"}
-                            />
+                                />
+                                {errors.referral_contacts && (
+                                        <p className="text-xs text-red-500">
+                                            {errors.referral_contacts &&
+                                            typeof errors?.referral_contacts
+                                                .message === "string"
+                                                ? errors.referral_contacts.message
+                                                : "Error occurred"}
+                                        </p>
+                                    )}
+                                </div>    
                             <Input
                                 {...register("guarantor_name")}
                                 label={"Guarantor Name"}
@@ -401,9 +620,9 @@ export default function CreateStaff() {
                                 name="next_of_kin"
                                 control={control}
                                 defaultValue=""
-                                rules={{
-                                    required: "Next of kin is required",
-                                }}
+                                // rules={{
+                                //     required: "Next of kin is required",
+                                // }}
                                 render={({ field }) => (
                                     <div className="w-full">
                                         <Select
@@ -431,7 +650,7 @@ export default function CreateStaff() {
                                                 </Option>
                                             ))}
                                         </Select>
-                                        {errors.next_of_kin && (
+                                        {/* {errors.next_of_kin && (
                                             <p className="text-xs text-red-500">
                                                 {errors.next_of_kin &&
                                                 typeof errors?.next_of_kin
@@ -439,7 +658,7 @@ export default function CreateStaff() {
                                                     ? errors.next_of_kin.message
                                                     : "Error occurred"}
                                             </p>
-                                        )}
+                                        )} */}
                                     </div>
                                 )}
                             />
@@ -499,15 +718,10 @@ export default function CreateStaff() {
                             />
                         </div>
                         <div className="flex justify-end">
-                            <Button
-                                className="bg-[#17255a] text-[#ff8427] p-2 gap-1 text-xs cursor-pointer"
-                                label="Next"
-                                icon={<FaArrowRight />}
-                                iconPos="right"
-                                onClick={() =>
-                                    stepperRef?.current?.nextCallback()
-                                }
-                            />
+                        <div onClick={() => handleNext(3)} className="bg-[#17255a] rounded-sm flex items-center text-[#ff8427] px-4 py-2 gap-1 text-xs cursor-pointer">
+                            <span>Next</span>
+                            <FaArrowRight />
+                        </div>
                         </div>
                     </div>
 
@@ -520,21 +734,64 @@ export default function CreateStaff() {
                                 "w-full grid md:grid-cols-2 grid-cols-1 gap-4 p-2  border-[0.9px] border-gray-500 "
                             }
                         >
+                            <div className="w-full">
                             <Input
-                                {...register("bank_name")}
+                                {...register("bank_name",{
+                                    required:"Bank Name is required",
+                                    onChange: () => clearErrors("bank_name"),
+                                })}
                                 label={"Bank Name"}
                                 className={"w-full"}
                             />
+                              {errors.bank_name && (
+                                        <p className="text-xs text-red-500">
+                                            {errors.bank_name &&
+                                            typeof errors?.bank_name
+                                                .message === "string"
+                                                ? errors.bank_name.message
+                                                : "Error occurred"}
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="w-full">
                             <Input
-                                {...register("bank_branch")}
+                                {...register("bank_branch",{
+                                    required:"Bank Branch is required",
+                                    onChange: () => clearErrors("bank_branch"),
+                                })}
                                 label={"Bank Branch"}
                                 className={"w-full"}
                             />
+                              {errors.bank_branch && (
+                                        <p className="text-xs text-red-500">
+                                            {errors.bank_branch &&
+                                            typeof errors?.bank_branch
+                                                .message === "string"
+                                                ? errors.bank_branch.message
+                                                : "Error occurred"}
+                                        </p>
+                                    )}
+                                </div>
+
+                            <div className="w-full">
                             <Input
-                                {...register("bank_card_number")}
+                                {...register("bank_card_number",{
+                                    required:"Account Number is required",
+                                    onChange: () => clearErrors("bank_card_number"),
+                                })}
                                 label={"Account Number"}
                                 className={"w-full"}
                             />
+                              {errors.bank_card_number && (
+                                        <p className="text-xs text-red-500">
+                                            {errors.bank_card_number &&
+                                            typeof errors?.bank_card_number
+                                                .message === "string"
+                                                ? errors.bank_card_number.message
+                                                : "Error occurred"}
+                                        </p>
+                                    )}
+                                </div>
                         </div>
                         <div
                             className={
@@ -799,17 +1056,7 @@ export default function CreateStaff() {
                                 }
                             />
                         </div>
-                        <div className="flex justify-end">
-                            <Button
-                                className="bg-[#17255a] text-[#ff8427] p-2 gap-1 text-xs cursor-pointer"
-                                label="Next"
-                                icon={<FaArrowRight />}
-                                iconPos="right"
-                                onClick={() =>
-                                    stepperRef?.current?.nextCallback()
-                                }
-                            />
-                        </div>
+                       
                     </div>
                     <div className={"flex my-4 justify-start  w-full"}>
                         Contract Details

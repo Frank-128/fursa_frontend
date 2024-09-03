@@ -83,8 +83,8 @@ const { data, error, isLoading } = useQuery({
                                 <span className={'text-sm text-gray-500'}>{data?.phonenumber}</span>
                             </div>
                             <div className={'flex flex-col'}>
-                                <span className={'text-xs text-gray-800'}>Address</span>
-                                <span className={'text-sm text-gray-500'}>Oysterbay, Dar es Salaam</span>
+                                <span className={'text-xs text-gray-800'}>NIDA</span>
+                                <span className={'text-sm text-gray-500'}>{data?.NIDA}</span>
                             </div>
                             <div className={'flex flex-col'}>
                                 <span className={'text-xs text-gray-800'}>TIN</span>
@@ -107,25 +107,22 @@ const { data, error, isLoading } = useQuery({
                                 <span className={'text-xs font-bold text-gray-800'}>Name</span>
                                 <span className={'text-sm text-gray-500'}>Violet Green John</span>
                             </div>
+
                             <div className={'flex flex-col'}>
-                                <span className={'text-xs text-gray-800'}>NIDA</span>
-                                <span className={'text-sm text-gray-500'}>20120110001210122</span>
+                                <span className={'text-xs text-gray-800'}>Marital Status</span>
+                                <span className={'text-sm text-gray-500'}>{data?.marital_status}</span>
                             </div>
                             <div className={'flex flex-col'}>
                                 <span className={'text-xs text-gray-800'}>Address</span>
-                                <span className={'text-sm text-gray-500'}>Oysterbay, Dar es Salaam</span>
+                                <span className={'text-sm text-gray-500'}>{data?.subtown +","+data?.ward+" "+data?.street}</span>
                             </div>
                             <div className={'flex flex-col'}>
-                                <span className={'text-xs text-gray-800'}>TIN</span>
-                                <span className={'text-sm text-gray-500'}>112233</span>
-                            </div>
-                            <div className={'flex flex-col'}>
-                                <span className={'text-xs text-gray-800'}>Bank</span>
-                                <span className={'text-sm text-gray-500'}>CRDB</span>
+                                <span className={'text-xs text-gray-800'}>Date of birth</span>
+                                <span className={'text-sm text-gray-500'}>{data?.date_of_birth}</span>
                             </div>
                             <div className={'flex flex-col'}>
                                 <span className={'text-xs text-gray-800'}>Bank No</span>
-                                <span className={'text-sm text-gray-500'}>4532123212328</span>
+                                <span className={'text-sm text-gray-500'}>{data?.bank_card_number || "null"}</span>
                             </div>
                         </div>
                     </div>
